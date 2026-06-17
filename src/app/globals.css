@@ -1,2 +1,15 @@
 @import "tailwindcss";
 @import "@heroui/styles";
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ffffff !important;
+}
+
+.swiper-pagination-bullet {
+  background: white !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #2563eb !important;
+}

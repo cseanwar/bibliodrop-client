@@ -3,13 +3,16 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaTicketAlt, FaUser, FaSignOutAlt, FaThLarge } from "react-icons/fa";
+import { FaUser, FaSignOutAlt, FaThLarge } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
 export default function Navbar() {
   const pathname = usePathname();
+
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -18,144 +21,252 @@ export default function Navbar() {
         setDropdownOpen(false);
       }
     }
+
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     setDropdownOpen(false);
-    alert("Logged Out! (Design Only)");
   };
 
   const mockUser = {
     name: "Jane Doe",
     email: "jane@example.com",
-    role: "attendee",
+    role: "Reader",
     image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde",
   };
 
+  const navLinkClass = (isActive) =>
+    `text-md font-medium transition-colors duration-200 ${
+      isActive
+        ? "text-blue-600 font-bold"
+        : "text-slate-700 hover:text-blue-600"
+    }`;
+
+  const navItemVariants = {
+    hidden: {
+      opacity: 0,
+      y: -15,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+    },
+  };
+
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-slate-200 backdrop-blur-md py-2">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        {/* LOGO */}
-        <Link href="/">
-          <Image
-            width={180}
-            height={50}
-            className="h-15 w-auto"
-            src="/logo.png"
-            alt="BiblioDrop logo"
-          />
-        </Link>
-
-        {/* NAVIGATION LINKS */}
-        <div className="hidden sm:flex items-center gap-8">
-          <Link
-            href="/"
-            className={`text-sm font-medium transition-colors ${pathname === "/" ? "text-pink-500 font-semibold" : "text-slate-300 hover:text-white"}`}
+    <motion.nav
+      initial={{ y: -60, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{
+        duration: 0.6,
+        ease: "easeOut",
+      }}
+      className="sticky top-0 z-50 bg-slate-50/95 backdrop-blur-md border-b border-slate-200 py-3"
+    >
+      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+        {/* Logo */}
+        <motion.div
+          initial={{ scale: 0.85, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div
+            animate={{
+              y: [0, -2, 0],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
           >
-            Home
-          </Link>
-          <Link
-            href="/events"
-            className={`text-sm font-medium transition-colors ${pathname.startsWith("/events") ? "text-pink-500 font-semibold" : "text-slate-300 hover:text-white"}`}
-          >
-            Browse Books
-          </Link>
-          {isLoggedIn && (
-            <Link
-              href={"/"}
-              className={`text-sm font-medium transition-colors ${pathname.startsWith("/dashboard") ? "text-pink-500 font-semibold" : "text-slate-300 hover:text-white"}`}
-            >
-              Dashboard
+            <Link href="/">
+              <Image
+                src="/logo.png"
+                alt="BiblioDrop Logo"
+                width={220}
+                height={60}
+                priority
+                className="h-14 w-auto object-contain"
+              />
             </Link>
-          )}
-        </div>
+          </motion.div>
+        </motion.div>
 
-        {/* RIGHT ACTIONS */}
-        <div className="flex items-center gap-4">
-          {!isLoggedIn && (
-            <div className="flex items-center gap-3">
-              <button
+        {/* Navigation */}
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.1,
+              },
+            },
+          }}
+          className="hidden md:flex justify-center items-center gap-8"
+        >
+          <motion.div variants={navItemVariants}>
+            <Link href="/" className={navLinkClass(pathname === "/")}>
+              Home
+            </Link>
+          </motion.div>
+
+          <motion.div variants={navItemVariants}>
+            <Link
+              href="/books"
+              className={navLinkClass(pathname.startsWith("/books"))}
+            >
+              Browse Books
+            </Link>
+          </motion.div>
+
+          {isLoggedIn && (
+            <motion.div variants={navItemVariants}>
+              <Link
+                href="/dashboard"
+                className={navLinkClass(pathname.startsWith("/dashboard"))}
+              >
+                Dashboard
+              </Link>
+            </motion.div>
+          )}
+        </motion.div>
+
+        {/* Right Side */}
+        <div className="flex justify-center items-center gap-3">
+          {!isLoggedIn ? (
+            <>
+              <motion.button
+                whileHover={{
+                  scale: 1.05,
+                }}
+                whileTap={{
+                  scale: 0.95,
+                }}
                 onClick={() => setIsLoggedIn(true)}
-                className="inline-flex items-center justify-center font-semibold text-xs text-slate-300 hover:text-white h-9 px-4 rounded-xl hover:bg-white/5 transition"
+                className="text-sm font-medium text-slate-700 hover:text-blue-600 transition"
               >
                 Login
-              </button>
-              <Link
-                href="/register"
-                className="inline-flex items-center justify-center font-semibold text-xs bg-gradient-to-r from-pink-500 to-indigo-600 text-white shadow-lg shadow-pink-500/10 hover:shadow-pink-500/20 transition h-9 px-4 rounded-xl"
-              >
-                Sign Up
-              </Link>
-            </div>
-          )}
+              </motion.button>
 
-          {isLoggedIn && (
-            <div className="relative" ref={dropdownRef}>
-              <button
+              <motion.div
+                whileHover={{
+                  scale: 1.05,
+                }}
+                whileTap={{
+                  scale: 0.95,
+                }}
+              >
+                <Link
+                  href="/register"
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition shadow-sm"
+                >
+                  Sign Up
+                </Link>
+              </motion.div>
+            </>
+          ) : (
+            <div className="relative flex items-center" ref={dropdownRef}>
+              <motion.button
+                whileHover={{
+                  scale: 1.08,
+                }}
+                whileTap={{
+                  scale: 0.95,
+                }}
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center transition-transform hover:scale-105 outline-none focus:outline-none cursor-pointer"
+                className="cursor-pointer"
               >
                 <Image
-                  width={20}
-                  height={20}
-                  className="w-12 h-12 rounded-full object-cover border border-pink-500 shadow-md shadow-pink-500/10"
                   src={mockUser.image}
-                  alt="avatar"
+                  alt="User Avatar"
+                  width={50}
+                  height={50}
+                  className="rounded-full object-cover border-2 border-blue-500 shadow-md shadow-blue-500/10"
                 />
-              </button>
+              </motion.button>
 
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-3 w-56 bg-slate-900/95 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl py-2 z-55 animate-in fade-in slide-in-from-top-2 duration-200">
-                  {/* User info */}
-                  <div className="px-4 py-2.5 border-b border-white/5 mb-1.5 cursor-default">
-                    <p className="text-[10px] text-pink-400 font-bold uppercase tracking-wider">
-                      {mockUser.role} Account
-                    </p>
-                    <p className="font-bold text-white text-sm mt-0.5">
-                      {mockUser.name}
-                    </p>
-                    <p className="text-[11px] text-slate-400 truncate mt-0.5">
-                      {mockUser.email}
-                    </p>
-                  </div>
-
-                  {/* Actions */}
-                  <Link
-                    href="/dashboard/organizer"
-                    onClick={() => setDropdownOpen(false)}
-                    className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition cursor-pointer"
+              <AnimatePresence>
+                {dropdownOpen && (
+                  <motion.div
+                    initial={{
+                      opacity: 0,
+                      y: -10,
+                      scale: 0.95,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      scale: 1,
+                    }}
+                    exit={{
+                      opacity: 0,
+                      y: -10,
+                      scale: 0.95,
+                    }}
+                    transition={{
+                      duration: 0.2,
+                    }}
+                    className="absolute right-0 top-14 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl py-2 overflow-hidden"
                   >
-                    <FaThLarge className="text-slate-400 text-sm shrink-0" />
-                    <span>My Dashboard</span>
-                  </Link>
+                    {/* User Info */}
+                    <div className="px-4 py-3 border-b border-slate-100">
+                      <p className="text-[10px] uppercase tracking-wider font-bold text-amber-500">
+                        {mockUser.role} Account
+                      </p>
 
-                  <Link
-                    href={`/dashboard/${mockUser.role}`}
-                    onClick={() => setDropdownOpen(false)}
-                    className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition cursor-pointer"
-                  >
-                    <FaUser className="text-slate-400 text-sm shrink-0" />
-                    <span>Profile Settings</span>
-                  </Link>
+                      <p className="text-sm font-bold text-slate-900 mt-1">
+                        {mockUser.name}
+                      </p>
 
-                  <div className="border-t border-white/5 my-1.5" />
+                      <p className="text-xs text-slate-500 truncate mt-1">
+                        {mockUser.email}
+                      </p>
+                    </div>
 
-                  <button
-                    onClick={handleLogout}
-                    className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-xs font-semibold text-red-400 hover:text-red-300 hover:bg-red-500/5 transition cursor-pointer"
-                  >
-                    <FaSignOutAlt className="text-sm shrink-0 text-red-400" />
-                    <span>Log Out</span>
-                  </button>
-                </div>
-              )}
+                    {/* Dashboard */}
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 transition"
+                    >
+                      <FaThLarge className="text-blue-500" />
+                      My Dashboard
+                    </Link>
+
+                    {/* Profile */}
+                    <Link
+                      href="/profile"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 transition"
+                    >
+                      <FaUser className="text-blue-500" />
+                      Profile Settings
+                    </Link>
+
+                    <div className="border-t border-slate-100 my-1"></div>
+
+                    {/* Logout */}
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-500 hover:text-red-600 hover:bg-red-50 transition"
+                    >
+                      <FaSignOutAlt />
+                      Log Out
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           )}
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 }
