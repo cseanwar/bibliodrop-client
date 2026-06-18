@@ -1,9 +1,9 @@
-import Navbar from "./components/Navbar";
-import Banner from "./components/Banner";
-import TopLibrarians from "./components/TopLibrarians";
-import PopularCategories from "./components/PopularCategories";
-import WhyChooseUs from "./components/WhyChooseUs";
-import Footer from "./components/Footer";
+import Banner from "@/components/Banner";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import PopularCategories from "@/components/PopularCategories";
+import TopLibrarians from "@/components/TopLibrarians";
+import WhyChooseUs from "@/components/WhyChooseUs";
 
 export default function Home() {
   return (

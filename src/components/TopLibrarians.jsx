@@ -55,8 +55,13 @@ const cardVariants = {
 
 export default function TopLibrarians() {
   return (
-    <section className="py-24 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="relative bg-slate-50 dark:bg-slate-950 overflow-hidden">
+      {/* Background Glow */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-112.5 h-112.5 bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-3xl" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Section Heading */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -65,13 +70,15 @@ export default function TopLibrarians() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <span className="text-blue-600 font-semibold">TOP PROVIDERS</span>
+          <span className="text-blue-600 dark:text-blue-400 font-semibold uppercase tracking-wider">
+            Top Providers
+          </span>
 
-          <h2 className="mt-3 text-4xl font-bold text-slate-900">
+          <h2 className="mt-3 text-4xl md:text-5xl font-bold text-slate-900 dark:text-white">
             Meet Our Top Librarians
           </h2>
 
-          <p className="mt-4 text-slate-600 max-w-2xl mx-auto">
+          <p className="mt-4 text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Trusted by thousands of readers and recognized for outstanding
             delivery performance.
           </p>
@@ -96,38 +103,70 @@ export default function TopLibrarians() {
               transition={{
                 duration: 0.3,
               }}
-              className="bg-white rounded-3xl shadow-lg border border-slate-200 overflow-hidden"
+              className="
+                bg-white
+                dark:bg-slate-900
+                rounded-3xl
+                border
+                border-slate-200
+                dark:border-slate-800
+                shadow-lg
+                hover:shadow-xl
+                dark:hover:shadow-blue-900/20
+                transition-all
+                duration-300
+                overflow-hidden
+              "
             >
               <div className="p-8 text-center">
+                {/* Avatar */}
                 <div className="relative w-28 h-28 mx-auto mb-5">
                   <Image
                     src={librarian.image}
                     alt={librarian.name}
                     fill
-                    className="rounded-full object-cover border-4 border-blue-100"
+                    className="rounded-full object-cover border-4 border-blue-100 dark:border-slate-700"
                   />
                 </div>
 
-                <h3 className="text-xl font-bold text-slate-900">
+                {/* Name */}
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">
                   {librarian.name}
                 </h3>
 
-                <p className="text-slate-500 mt-1">{librarian.library}</p>
+                {/* Library */}
+                <p className="text-slate-500 dark:text-slate-400 mt-1">
+                  {librarian.library}
+                </p>
 
+                {/* Stats */}
                 <div className="mt-6 flex justify-center gap-8">
                   <div>
-                    <h4 className="text-blue-600 font-bold text-xl">
+                    <h4 className="text-blue-600 dark:text-blue-400 font-bold text-xl">
                       {librarian.deliveries}
                     </h4>
-                    <p className="text-sm text-slate-500">Deliveries</p>
+
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      Deliveries
+                    </p>
                   </div>
 
                   <div>
                     <h4 className="text-amber-500 font-bold text-xl">
                       ⭐ {librarian.rating}
                     </h4>
-                    <p className="text-sm text-slate-500">Rating</p>
+
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      Rating
+                    </p>
                   </div>
+                </div>
+
+                {/* Optional Badge */}
+                <div className="mt-6">
+                  <span className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 text-sm font-medium">
+                    Verified Provider
+                  </span>
                 </div>
               </div>
             </motion.div>

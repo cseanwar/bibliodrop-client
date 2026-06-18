@@ -71,8 +71,13 @@ const cardVariants = {
 
 export default function WhyChooseUs() {
   return (
-    <section className="py-24 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="relative py-24 bg-slate-50 dark:bg-slate-950 overflow-hidden">
+      {/* Background Glow */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute bottom-0 right-0 w-125 h-125 bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-3xl" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Section Heading */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -81,15 +86,15 @@ export default function WhyChooseUs() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <span className="text-blue-600 font-semibold uppercase tracking-wider">
+          <span className="text-blue-600 dark:text-blue-400 font-semibold uppercase tracking-wider">
             Why BiblioDrop
           </span>
 
-          <h2 className="mt-3 text-4xl font-bold text-slate-900">
+          <h2 className="mt-3 text-4xl md:text-5xl font-bold text-slate-900 dark:text-white">
             Why Choose BiblioDrop?
           </h2>
 
-          <p className="mt-4 text-slate-600 max-w-2xl mx-auto">
+          <p className="mt-4 text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Making library access easier, faster, and more convenient for
             readers everywhere.
           </p>
@@ -114,18 +119,52 @@ export default function WhyChooseUs() {
                   y: -8,
                   scale: 1.03,
                 }}
-                transition={{ duration: 0.25 }}
-                className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm hover:shadow-xl"
+                whileTap={{
+                  scale: 0.98,
+                }}
+                transition={{
+                  duration: 0.25,
+                }}
+                className="
+                  bg-white
+                  dark:bg-slate-900
+                  border
+                  border-slate-200
+                  dark:border-slate-800
+                  rounded-3xl
+                  p-6
+                  shadow-sm
+                  hover:shadow-xl
+                  dark:hover:shadow-blue-900/20
+                  dark:hover:border-blue-500/50
+                  transition-all
+                  duration-300
+                "
               >
-                <div className="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center mb-5">
-                  <Icon className="text-2xl text-blue-600" />
+                {/* Icon */}
+                <div
+                  className="
+                  w-14
+                  h-14
+                  rounded-2xl
+                  bg-blue-100
+                  dark:bg-slate-800
+                  flex
+                  items-center
+                  justify-center
+                  mb-5
+                "
+                >
+                  <Icon className="text-2xl text-blue-600 dark:text-blue-400" />
                 </div>
 
-                <h3 className="text-xl font-semibold text-slate-900 mb-3">
+                {/* Title */}
+                <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">
                   {feature.title}
                 </h3>
 
-                <p className="text-slate-600 leading-relaxed">
+                {/* Description */}
+                <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
                   {feature.description}
                 </p>
               </motion.div>

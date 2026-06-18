@@ -3,7 +3,7 @@
 
 .swiper-button-next,
 .swiper-button-prev {
-  color: #ffffff !important;
+  color: white !important;
 }
 
 .swiper-pagination-bullet {
@@ -11,5 +11,19 @@
 }
 
 .swiper-pagination-bullet-active {
-  background: #2563eb !important;
+  background: #3b82f6 !important;
+}
+
+html,
+body {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+* {
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease;
 }

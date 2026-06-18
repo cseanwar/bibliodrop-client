@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
@@ -56,6 +57,8 @@ const staggerContainer = {
 };
 
 export default function Banner() {
+  const { theme } = useTheme();
+
   return (
     <section className="relative">
       <Swiper
@@ -74,7 +77,7 @@ export default function Banner() {
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
             <div className="relative h-[85vh] overflow-hidden">
-              {/* Animated Background */}
+              {/* Background Image */}
               <motion.div
                 initial={{ scale: 1.15 }}
                 animate={{ scale: 1 }}
@@ -93,12 +96,16 @@ export default function Banner() {
                 />
               </motion.div>
 
-              {/* Dark Overlay */}
-              <div className="absolute inset-0 bg-black/65" />
+              {/* Theme Aware Overlay */}
+              <div
+                className={`absolute inset-0 ${
+                  theme === "dark" ? "bg-black/75" : "bg-slate-900/60"
+                }`}
+              />
 
               {/* Content */}
               <div className="absolute inset-0 flex items-center">
-                {/* Floating Glow */}
+                {/* Animated Glow */}
                 <motion.div
                   animate={{
                     scale: [1, 1.15, 1],
@@ -123,8 +130,20 @@ export default function Banner() {
                     {/* Badge */}
                     <motion.span
                       variants={fadeUp}
-                      transition={{ duration: 0.5 }}
-                      className="inline-block mb-4 px-4 py-2 rounded-full bg-blue-600/20 border border-blue-400/30 text-blue-200 text-sm font-medium"
+                      className="
+                      inline-block
+                      mb-4
+                      px-4
+                      py-2
+                      rounded-full
+                      bg-blue-600/20
+                      border
+                      border-blue-400/30
+                      text-blue-100
+                      backdrop-blur-md
+                      text-sm
+                      font-medium
+                    "
                     >
                       📚 BiblioDrop
                     </motion.span>
@@ -132,8 +151,14 @@ export default function Banner() {
                     {/* Heading */}
                     <motion.h1
                       variants={fadeUp}
-                      transition={{ duration: 0.7 }}
-                      className="text-4xl md:text-6xl font-bold text-white leading-tight mb-6"
+                      className="
+                      text-4xl
+                      md:text-6xl
+                      font-bold
+                      text-white
+                      leading-tight
+                      mb-6
+                    "
                     >
                       {slide.title}
                     </motion.h1>
@@ -141,8 +166,13 @@ export default function Banner() {
                     {/* Description */}
                     <motion.p
                       variants={fadeUp}
-                      transition={{ duration: 0.9 }}
-                      className="text-lg md:text-xl text-slate-200 mb-8 leading-relaxed"
+                      className="
+                      text-lg
+                      md:text-xl
+                      text-slate-200
+                      mb-8
+                      leading-relaxed
+                    "
                     >
                       {slide.description}
                     </motion.p>
@@ -150,36 +180,56 @@ export default function Banner() {
                     {/* Buttons */}
                     <motion.div
                       variants={fadeUp}
-                      transition={{ duration: 1 }}
                       className="flex flex-col sm:flex-row gap-4"
                     >
                       <motion.div
-                        whileHover={{
-                          scale: 1.05,
-                        }}
-                        whileTap={{
-                          scale: 0.95,
-                        }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                       >
                         <Link
                           href="/books"
-                          className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition"
+                          className="
+                          inline-flex
+                          items-center
+                          justify-center
+                          bg-blue-600
+                          hover:bg-blue-700
+                          text-white
+                          px-8
+                          py-4
+                          rounded-xl
+                          font-semibold
+                          shadow-lg
+                          shadow-blue-500/20
+                          transition
+                        "
                         >
                           Browse Books
                         </Link>
                       </motion.div>
 
                       <motion.div
-                        whileHover={{
-                          scale: 1.05,
-                        }}
-                        whileTap={{
-                          scale: 0.95,
-                        }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                       >
                         <Link
                           href="/about"
-                          className="inline-flex items-center justify-center bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-semibold transition"
+                          className="
+                          inline-flex
+                          items-center
+                          justify-center
+                          bg-white/10
+                          backdrop-blur-md
+                          border
+                          border-white/20
+                          hover:bg-white/20
+                          text-white
+                          px-8
+                          py-4
+                          rounded-xl
+                          font-semibold
+                          transition
+                        "
                         >
                           Learn More
                         </Link>
@@ -189,39 +239,42 @@ export default function Banner() {
                     {/* Statistics */}
                     <motion.div
                       variants={staggerContainer}
-                      className="mt-12 grid grid-cols-3 gap-8 max-w-lg"
+                      className="
+                      mt-12
+                      grid
+                      grid-cols-3
+                      gap-8
+                      max-w-lg
+                    "
                     >
-                      <motion.div
-                        variants={fadeUp}
-                        whileHover={{
-                          y: -5,
-                        }}
-                      >
-                        <h3 className="text-3xl font-bold text-white">5K+</h3>
-                        <p className="text-slate-300 text-sm">
-                          Books Available
-                        </p>
-                      </motion.div>
+                      {[
+                        ["5K+", "Books Available"],
+                        ["250+", "Libraries"],
+                        ["12K+", "Readers"],
+                      ].map((item, idx) => (
+                        <motion.div
+                          key={idx}
+                          variants={fadeUp}
+                          whileHover={{
+                            y: -6,
+                            scale: 1.03,
+                          }}
+                          className="
+                          bg-white/5
+                          backdrop-blur-sm
+                          rounded-xl
+                          p-4
+                          border
+                          border-white/10
+                        "
+                        >
+                          <h3 className="text-3xl font-bold text-white">
+                            {item[0]}
+                          </h3>
 
-                      <motion.div
-                        variants={fadeUp}
-                        whileHover={{
-                          y: -5,
-                        }}
-                      >
-                        <h3 className="text-3xl font-bold text-white">250+</h3>
-                        <p className="text-slate-300 text-sm">Libraries</p>
-                      </motion.div>
-
-                      <motion.div
-                        variants={fadeUp}
-                        whileHover={{
-                          y: -5,
-                        }}
-                      >
-                        <h3 className="text-3xl font-bold text-white">12K+</h3>
-                        <p className="text-slate-300 text-sm">Readers</p>
-                      </motion.div>
+                          <p className="text-slate-300 text-sm">{item[1]}</p>
+                        </motion.div>
+                      ))}
                     </motion.div>
                   </motion.div>
                 </div>

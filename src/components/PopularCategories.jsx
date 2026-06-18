@@ -114,8 +114,13 @@ const cardVariants = {
 
 export default function PopularCategories() {
   return (
-    <section className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="relative py-24 bg-slate-50 dark:bg-slate-950 overflow-hidden">
+      {/* Background Glow */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-125 h-125 bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-3xl" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -124,15 +129,15 @@ export default function PopularCategories() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-blue-600 font-semibold uppercase tracking-wider">
+          <span className="text-blue-600 dark:text-blue-400 font-semibold uppercase tracking-wider">
             Explore Categories
           </span>
 
-          <h2 className="mt-3 text-4xl font-bold text-slate-900">
+          <h2 className="mt-3 text-4xl md:text-5xl font-bold text-slate-900 dark:text-white">
             Popular Book Categories
           </h2>
 
-          <p className="mt-4 text-slate-600 max-w-2xl mx-auto">
+          <p className="mt-4 text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Discover books from a wide variety of genres and subjects, carefully
             curated by libraries and book providers.
           </p>
@@ -154,25 +159,74 @@ export default function PopularCategories() {
                 key={category.slug}
                 variants={cardVariants}
                 whileHover={{
-                  y: -10,
-                  scale: 1.03,
+                  y: -8,
+                  scale: 1.05,
                 }}
-                transition={{ duration: 0.25 }}
+                whileTap={{
+                  scale: 0.98,
+                }}
+                transition={{
+                  duration: 0.25,
+                }}
               >
                 <Link
                   href={`/books?category=${category.slug}`}
                   className="group block h-full"
                 >
-                  <div className="bg-white border border-slate-200 rounded-2xl p-4 text-center hover:border-blue-300 hover:shadow-lg transition-all duration-300 h-full">
-                    <div className="w-12 h-12 mx-auto rounded-xl bg-blue-100 flex items-center justify-center mb-3 group-hover:bg-blue-600 transition">
-                      <Icon className="text-xl text-blue-600 group-hover:text-white transition" />
+                  <div
+                    className="
+                    h-full
+                    rounded-2xl
+                    p-4
+                    text-center
+                    bg-white
+                    dark:bg-slate-900
+                    border
+                    border-slate-200
+                    dark:border-slate-800
+                    hover:border-blue-300
+                    dark:hover:border-blue-500
+                    hover:shadow-xl
+                    dark:hover:shadow-blue-900/20
+                    transition-all
+                    duration-300
+                  "
+                  >
+                    {/* Icon */}
+                    <div
+                      className="
+                      w-12
+                      h-12
+                      mx-auto
+                      mb-3
+                      rounded-xl
+                      bg-blue-100
+                      dark:bg-slate-800
+                      flex
+                      items-center
+                      justify-center
+                      group-hover:bg-blue-600
+                      transition
+                    "
+                    >
+                      <Icon
+                        className="
+                        text-xl
+                        text-blue-600
+                        dark:text-blue-400
+                        group-hover:text-white
+                        transition
+                      "
+                      />
                     </div>
 
-                    <h3 className="text-base font-semibold text-slate-900">
+                    {/* Category Name */}
+                    <h3 className="text-base font-semibold text-slate-900 dark:text-white">
                       {category.name}
                     </h3>
 
-                    <p className="text-xs text-slate-500 mt-1">
+                    {/* Books Count */}
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                       {category.books}
                     </p>
                   </div>
