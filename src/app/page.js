@@ -1,6 +1,7 @@
 import Navbar from "./components/Navbar";
 import Banner from "./components/Banner";
 import TopLibrarians from "./components/TopLibrarians";
+import PopularCategories from "./components/PopularCategories";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <Navbar />
       <Banner />
       <TopLibrarians />
+      <PopularCategories />
     </div>
   );
 }
