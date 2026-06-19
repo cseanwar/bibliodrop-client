@@ -21,7 +21,7 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       role: {
-        defaultValue: 'reader',
+        defaultValue: 'user',
       },
       isBlocked: {
         defaultValue: false,
