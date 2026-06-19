@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   FaUser,
   FaSignOutAlt,
@@ -14,8 +14,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import ThemeToggle from "./shared/ThemeToggle";
 import { useTheme } from "next-themes";
+import { authClient, useSession } from "@/lib/auth-client";
 
 export default function Navbar() {
+  const router = useRouter();
+  const { data: session } = useSession();
+
   const { resolvedTheme } = useTheme();
   const pathname = usePathname();
 
@@ -37,16 +41,11 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
+  const handleLogout = async () => {
+    await authClient.signOut();
     setDropdownOpen(false);
-  };
-
-  const mockUser = {
-    name: "Jane Doe",
-    email: "jane@example.com",
-    role: "Reader",
-    image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde",
+    toast.success("Logged out successfully");
+    router.push("/");
   };
 
   const navLinkClass = (isActive) =>
@@ -149,10 +148,10 @@ object-contain
             </Link>
           </motion.div>
 
-          {isLoggedIn && (
+          {session && session?.user && (
             <motion.div variants={navItemVariants}>
               <Link
-                href="/dashboard"
+                href={`/dashboard/${session?.user?.role}`}
                 className={navLinkClass(pathname.startsWith("/dashboard"))}
               >
                 Dashboard
@@ -180,7 +179,7 @@ object-contain
             <FaBars size={20} />
           </button>
           <ThemeToggle />
-          {!isLoggedIn ? (
+          {!session ? (
             <>
               <motion.button
                 whileHover={{
@@ -190,17 +189,20 @@ object-contain
                   scale: 0.95,
                 }}
                 onClick={() => setIsLoggedIn(true)}
+              >
+                <Link 
+                href="/login"
                 className="
-text-sm
-font-medium
+text-md
+font-semibold
 text-slate-700
 dark:text-slate-300
 hover:text-blue-600
 dark:hover:text-blue-400
 transition
-"
-              >
-                Login
+cursor-pointer
+"> Login
+                </Link>
               </motion.button>
 
               <motion.div
@@ -241,7 +243,7 @@ shadow-sm
                 className="cursor-pointer"
               >
                 <Image
-                  src={mockUser.image}
+                  src={session?.user?.image}
                   alt="User Avatar"
                   width={50}
                   height={50}
@@ -292,16 +294,16 @@ shadow-sm
                   >
                     {/* User Info */}
                     <div className="px-6 py-5 border-b border-slate-200 dark:border-slate-800">
-                      <p className="text-xs uppercase tracking-wider font-semibold text-amber-500">
-                        {mockUser.role} Account
-                      </p>
+                      {/* <p className="text-xs uppercase tracking-wider font-semibold text-amber-500">
+                        {session.user.role} Account
+                      </p> */}
 
                       <p className="text-lg font-bold text-slate-900 dark:text-white mt-2">
-                        {mockUser.name}
+                        {session.user.name} <span className="uppercase text-xs text-amber-500">({session.user.role})</span>
                       </p>
 
                       <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                        {mockUser.email}
+                        {session.user.email}
                       </p>
                     </div>
 

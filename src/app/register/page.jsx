@@ -5,13 +5,15 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Card, CardHeader, CardContent, Input, Button } from "@heroui/react";
-import { FaUser, FaEnvelope, FaLock, FaImage, FaGoogle } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaLock, FaImage } from "react-icons/fa";
 import toast from "react-hot-toast";
 
 import { authClient } from "@/lib/auth-client";
 import { imageUploadInImgBB } from "@/utilities/imageUploadInImgBB";
 import { IoBookSharp } from "react-icons/io5";
 import { HiOutlineBuildingLibrary } from "react-icons/hi2";
+import Image from "next/image";
+import { FcGoogle } from "react-icons/fc";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -79,10 +81,24 @@ export default function RegisterPage() {
         className="w-full max-w-xl"
       >
         <Card className="p-2 md:p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl rounded-3xl">
-          <CardHeader className="flex flex-col text-center pt-8 pb-4">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
-              Join BiblioDrop
-            </h1>
+          <CardHeader className="flex flex-col items-center text-center pt-8 pb-4">
+            <div className="mb-5">
+              <Image
+                src="/logo.png"
+                alt="BiblioDrop"
+                width={220}
+                height={60}
+                className="dark:hidden"
+              />
+
+              <Image
+                src="/logo-light.png"
+                alt="BiblioDrop"
+                width={220}
+                height={60}
+                className="hidden dark:block"
+              />
+            </div>
             <p className="mt-2 text-sm md:text-base text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
               Create your account and start borrowing books from local
               libraries.
@@ -149,7 +165,9 @@ export default function RegisterPage() {
                 </label>
                 <div className="relative flex items-center">
                   <Input
-                    {...register("image")}
+                    {...register("image", {
+                      required: "Profile image is required",
+                    })}
                     type="file"
                     accept="image/*"
                     variant="bordered"
@@ -159,6 +177,11 @@ export default function RegisterPage() {
                     }
                   />
                 </div>
+                {errors.image && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.image.message}
+                  </p>
+                )}
               </div>
 
               {/* Password */}
@@ -285,31 +308,31 @@ export default function RegisterPage() {
             </form>
 
             {/* Divider */}
-            <div className="flex items-center mt-6">
-              <div className="flex-1 border-t border-slate-200 dark:border-slate-800" />
-              <span className="px-3 text-xs font-medium text-slate-400 dark:text-slate-500 bg-white dark:bg-slate-900 z-10">
-                OR
+            <div className="flex items-center my-6">
+              <div className="flex-1 border-t border-slate-200 dark:border-slate-700"></div>
+
+              <span className="px-3 text-xs text-slate-500">
+                OR CONTINUE WITH GOOGLE
               </span>
-              <div className="flex-1 border-t border-slate-200 dark:border-slate-800" />
+
+              <div className="flex-1 border-t border-slate-200 dark:border-slate-700"></div>
             </div>
 
             {/* Google OAuth Button */}
-            <Button
-              type="button"
+            <button
               onClick={handleGoogleLogin}
-              variant="bordered"
-              className="w-full h-12 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 font-medium rounded-xl text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-              startContent={<FaGoogle className="text-red-500 text-base" />}
+              className="flex justify-center items-center gap-2 w-full h-12 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 font-medium rounded-xl text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
             >
-              Continue with Google
-            </Button>
+              <FcGoogle size={24} className="text-red-500 text-base" />
+              Sign up with Google
+            </button>
 
             {/* Footer Navigation */}
             <p className="text-center mt-8 text-sm text-slate-500 dark:text-slate-400">
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="text-blue-600 dark:text-blue-400 font-semibold hover:underline transition-all"
+                className="text-blue-600 dark:text-blue-400 text-base font-semibold hover:underline transition-all"
               >
                 Login
               </Link>
