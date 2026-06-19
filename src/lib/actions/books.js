@@ -23,3 +23,36 @@ export async function addBook(newBook) {
 
   return response.json();
 }
+
+export async function getLibrarianBooks(email) {
+  const res = await fetch(
+    `${baseUrl}/api/books/librarian/${email}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  return res.json();
+}
+
+export async function deleteBook(id) {
+  const res = await fetch(
+    `${baseUrl}/api/books/${id}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  return res.json();
+}
+
+export async function toggleBookStatus(id) {
+  const res = await fetch(
+    `${baseUrl}/api/books/toggle-status/${id}`,
+    {
+      method: "PATCH",
+    }
+  );
+
+  return res.json();
+}
