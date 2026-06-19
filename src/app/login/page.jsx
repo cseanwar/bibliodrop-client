@@ -14,7 +14,7 @@ import {
 } from "@heroui/react";
 
 import { useForm } from "react-hook-form";
-import { FaEnvelope, FaLock, FaGoogle, FaBookOpen } from "react-icons/fa";
+import { FaEnvelope, FaLock } from "react-icons/fa";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
@@ -57,6 +57,8 @@ export default function LoginPage() {
 
       if (role === "librarian") {
         router.push("/dashboard/librarian");
+      } else if (role === "reader") {
+        router.push("/dashboard/user");
       } else if (role === "admin") {
         router.push("/dashboard/admin");
       } else {

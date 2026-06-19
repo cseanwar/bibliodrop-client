@@ -36,7 +36,7 @@ export default function DashboardSidebar() {
 
   const librarianMenu = [
     {
-      label: "Dashboard",
+      label: "Overview",
       icon: FaUsers,
       href: "/dashboard/librarian",
     },
@@ -59,7 +59,7 @@ export default function DashboardSidebar() {
 
   const userMenu = [
     {
-      label: "Dashboard",
+      label: "Overview",
       icon: FaUserCircle,
       href: "/dashboard/user",
     },
@@ -82,7 +82,7 @@ export default function DashboardSidebar() {
 
   const adminMenu = [
     {
-      label: "Dashboard",
+      label: "Overview",
       icon: FaUserShield,
       href: "/dashboard/admin",
     },

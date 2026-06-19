@@ -65,7 +65,12 @@ export default function RegisterPage() {
       }
 
       toast.success("Welcome to BiblioDrop!");
-      router.push("/");
+
+      if (data.role === "librarian") {
+        router.replace("/dashboard/librarian");
+      } else {
+        router.replace("/dashboard/user");
+      }
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong");
@@ -255,7 +260,7 @@ export default function RegisterPage() {
                   <label className="cursor-pointer group">
                     <input
                       type="radio"
-                      value="reader"
+                      value="user"
                       {...register("role", { required: "Role is required" })}
                       className="hidden peer"
                     />
