@@ -99,7 +99,7 @@ export default function DashboardSidebar() {
     {
       label: "Manage Books",
       icon: FaBook,
-      href: "/dashboard/admin/manage-all-books",
+      href: "/dashboard/admin/manage-books",
     },
     {
       label: "Transactions",
