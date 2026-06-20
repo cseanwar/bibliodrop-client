@@ -1,58 +1,37 @@
-"use server";
+import { serverFetch, serverMutation } from "../core/server";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+export const addBook = async (newBook) => {
+  return serverMutation("/api/books", newBook);
+};
 
-export async function addBook(newBook) {
-  if (!baseUrl) {
-    throw new Error(
-      "NEXT_PUBLIC_API_BASE_URL is missing in your environment variables"
-    );
-  }
+export const getBooksByLibrarian = async (email) => {
+  return serverFetch(`/api/books/librarian/${email}`);
+};
 
-  const response = await fetch(`${baseUrl}/api/books`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newBook),
-  });
+export const getSingleBook = async (id) => {
+  return serverFetch(`/api/books/${id}`);
+};
 
-  if (!response.ok) {
-    throw new Error("Failed to add book");
-  }
-
-  return response.json();
-}
-
-export async function getLibrarianBooks(email) {
-  const res = await fetch(
-    `${baseUrl}/api/books/librarian/${email}`,
-    {
-      cache: "no-store",
-    }
+export const updateBook = async (id, updatedBook) => {
+  return serverMutation(
+    `/api/books/${id}`,
+    updatedBook,
+    "PATCH"
   );
+};
 
-  return res.json();
-}
-
-export async function deleteBook(id) {
-  const res = await fetch(
-    `${baseUrl}/api/books/${id}`,
-    {
-      method: "DELETE",
-    }
+export const deleteBook = async (id) => {
+  return serverMutation(
+    `/api/books/${id}`,
+    {},
+    "DELETE"
   );
+};
 
-  return res.json();
-}
-
-export async function toggleBookStatus(id) {
-  const res = await fetch(
-    `${baseUrl}/api/books/toggle-status/${id}`,
-    {
-      method: "PATCH",
-    }
+export const toggleBookStatus = async (id) => {
+  return serverMutation(
+    `/api/books/toggle-status/${id}`,
+    {},
+    "PATCH"
   );
-
-  return res.json();
-}
+};

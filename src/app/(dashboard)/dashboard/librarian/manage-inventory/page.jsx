@@ -5,24 +5,39 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import { useSession } from "@/lib/auth-client";
 import {
-  getLibrarianBooks,
+  getBooksByLibrarian,
   deleteBook,
   toggleBookStatus,
 } from "@/lib/actions/books";
+import { useRouter } from "next/navigation";
+import EditModal from "@/components/EditModal";
 
 export default function ManageInventoryPage() {
+  const router = useRouter();
   const { data: session } = useSession();
 
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchBooks = async () => {
-    if (!session?.user?.email) return;
+    try {
+      if (!session?.user?.email) return;
 
-    const data = await getLibrarianBooks(session.user.email);
+      setLoading(true);
 
-    setBooks(data);
-    setLoading(false);
+      const data = await getBooksByLibrarian(session.user.email);
+
+      console.log("BOOKS DATA:", data);
+
+      setBooks(data || []);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to load books");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -39,6 +54,11 @@ export default function ManageInventoryPage() {
     toast.success("Book deleted");
 
     fetchBooks();
+  };
+
+  const handleEdit = (book) => {
+    setSelectedBook(book);
+    setIsModalOpen(true);
   };
 
   const handleToggle = async (id) => {
@@ -86,8 +106,8 @@ export default function ManageInventoryPage() {
             {/* Book */}
             <div className="flex items-center gap-4">
               <Image
-              width={20}
-              height={20}
+                width={20}
+                height={20}
                 src={book.image}
                 alt={book.title}
                 className="w-16 h-20 object-cover rounded-lg border"
@@ -132,17 +152,31 @@ export default function ManageInventoryPage() {
 
             {/* Actions */}
             <div className="flex justify-center gap-2">
-              <button className="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-xl">
+              <button
+                type="button"
+                onClick={() => handleEdit(book)}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-xl"
+              >
                 Edit
               </button>
 
-              <button className="bg-red-500 hover:bg-red-600 text-white p-3 rounded-xl">
+              <button
+                type="button"
+                onClick={() => handleDelete(book._id)}
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl"
+              >
                 Delete
               </button>
             </div>
           </div>
         ))}
       </div>
+      <EditModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        book={selectedBook}
+        refetch={fetchBooks}
+      />
     </div>
   );
 }

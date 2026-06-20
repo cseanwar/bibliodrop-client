@@ -20,13 +20,13 @@ import {
   FaUserCircle,
   FaUsers,
   FaUserShield,
-  FaCalendarAlt,
+  FaTruck,
 } from "react-icons/fa";
 
 import toast from "react-hot-toast";
 
 export default function DashboardSidebar() {
-    const router = useRouter();
+  const router = useRouter();
   const pathname = usePathname();
   const { data: session } = useSession();
 
@@ -52,7 +52,7 @@ export default function DashboardSidebar() {
     },
     {
       label: "Manage Deliveries",
-      icon: FaCalendarAlt,
+      icon: FaTruck,
       href: "/dashboard/librarian/manage-deliveries",
     },
   ];
@@ -120,7 +120,7 @@ export default function DashboardSidebar() {
       await authClient.signOut();
 
       toast.success("Logged out successfully");
-        router.push("/");
+      router.push("/");
     } catch {
       toast.error("Logout failed");
     }
@@ -185,21 +185,25 @@ export default function DashboardSidebar() {
               <FaTimes className="text-slate-500" />
             </button>
 
-            <Image
-              src="/logo.png"
-              alt="BiblioDrop"
-              width={180}
-              height={50}
-              className="dark:hidden"
-            />
+            <Link href="/">
+              <Image
+                src="/logo.png"
+                alt="BiblioDrop"
+                width={180}
+                height={50}
+                className="dark:hidden"
+              />
+            </Link>
 
-            <Image
-              src="/logo-light.png"
-              alt="BiblioDrop"
-              width={180}
-              height={50}
-              className="hidden dark:block"
-            />
+            <Link href="/">
+              <Image
+                src="/logo-light.png"
+                alt="BiblioDrop"
+                width={180}
+                height={50}
+                className="hidden dark:block"
+              />
+            </Link>
           </div>
 
           {/* User Info */}
