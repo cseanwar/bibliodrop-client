@@ -89,7 +89,7 @@ export default function DashboardSidebar() {
     {
       label: "Book Approval",
       icon: FaBook,
-      href: "/dashboard/admin/book-approval-queue",
+      href: "/dashboard/admin/book-approval",
     },
     {
       label: "Manage Users",

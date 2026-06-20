@@ -166,7 +166,7 @@ export default function AddBookPage() {
                       {...register("category", {
                         required: true,
                       })}
-                      className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent"
+                      className="w-full text-slate-400 h-12 pl-11 pr-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent"
                     >
                       <option value="">Select Category</option>
                       <option value="Fiction">Fiction</option>

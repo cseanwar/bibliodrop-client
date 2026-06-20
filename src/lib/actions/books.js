@@ -35,3 +35,23 @@ export const toggleBookStatus = async (id) => {
     "PATCH"
   );
 };
+
+// export const getPendingBooks = async () => {
+//   return serverFetch("/api/books/pending");
+// };
+
+// export const approveBook = async (id) => {
+//   return serverMutation(
+//     `/api/admin/books/approve/${id}`,
+//     {},
+//     "PATCH"
+//   );
+// };
+
+// export const adminDeleteBook = async (id) => {
+//   return serverMutation(
+//     `/api/admin/books/${id}`,
+//     {},
+//     "DELETE"
+//   );
+// };
