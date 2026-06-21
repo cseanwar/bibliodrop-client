@@ -53,11 +53,11 @@ export default function ManageUsersPage() {
   }
 
   return (
-    <div className="p-6 text-slate-100 min-h-screen bg-[#050b18]">
+    <div className="p-6">
       <div className="mb-8 flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white">Manage Users</h1>
-          <p className="text-slate-400 mt-2 text-sm">Manage user roles and accounts.</p>
+          <h1 className="text-3xl font-bold">Manage Users</h1>
+          <p className="text-slate-500 mt-2">Manage user roles and accounts.</p>
         </div>
         <div className="bg-slate-800/50 border border-slate-700/50 px-4 py-2 rounded-xl text-sm font-medium text-slate-300">
           Total Users: <span className="text-white font-bold">{users.length}</span>
@@ -65,12 +65,12 @@ export default function ManageUsersPage() {
       </div>
 
       {users.length === 0 ? (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-10 text-center">
-          <h2 className="text-xl font-semibold text-slate-400">No Users Found</h2>
+        <div className="bg-white rounded-2xl p-10 text-center border">
+          <h2 className="text-xl font-semibold">No Users Found</h2>
         </div>
       ) : (
-        <div className="overflow-x-auto bg-slate-900/60 border border-slate-800 rounded-2xl backdrop-blur-md">
-          <table className="w-full table-fixed min-w-[900px] border-collapse">
+        <div className="overflow-x-auto dark:bg-slate-900 rounded-2xl border">
+          <table className="w-full">
             <thead>
               <tr className="border-b border-slate-800 bg-slate-900 text-slate-400 text-xs uppercase tracking-wider font-semibold">
                 <th className="w-[25%] px-6 py-4 text-left">Name</th>
@@ -87,7 +87,7 @@ export default function ManageUsersPage() {
                   className="hover:bg-slate-800/30 transition-colors align-middle"
                 >
                   {/* Name */}
-                  <td className="px-6 py-4 font-medium text-white truncate">
+                  <td className="px-6 py-4 text-slate-400 truncate">
                     {user.name}
                   </td>
 

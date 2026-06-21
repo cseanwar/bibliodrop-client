@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
 import { useSession } from "@/lib/auth-client";
+
 import {
   getLibrarianDeliveries,
   updateDeliveryStatus,
 } from "@/lib/actions/deliveries";
-import toast from "react-hot-toast";
-import Image from "next/image";
 
 export default function ManageDeliveriesPage() {
   const { data: session } = useSession();
@@ -15,36 +16,38 @@ export default function ManageDeliveriesPage() {
   const [deliveries, setDeliveries] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const loadData = async () => {
-    if (!session?.user?.email) return;
-
+  const fetchDeliveries = async () => {
     try {
-      const data = await getLibrarianDeliveries(session.user.email);
+      const data = await getLibrarianDeliveries(session?.user?.email);
 
-      setDeliveries(data);
+      setDeliveries(data || []);
+    } catch {
+      toast.error("Failed to load deliveries");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadData();
+    if (session?.user?.email) {
+      fetchDeliveries();
+    }
   }, [session]);
 
-  const handleStatusChange = async (id, status) => {
+  const handleStatusUpdate = async (id) => {
     try {
-      await updateDeliveryStatus(id, status);
+      await updateDeliveryStatus(id);
 
       toast.success("Status updated");
 
-      loadData();
+      fetchDeliveries();
     } catch {
-      toast.error("Failed to update");
+      toast.error("Update failed");
     }
   };
 
   if (loading) {
-    return <div className="text-center py-20">Loading deliveries...</div>;
+    return <div className="py-10 text-center">Loading deliveries...</div>;
   }
 
   return (
@@ -81,89 +84,75 @@ export default function ManageDeliveriesPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-slate-900 rounded-3xl border overflow-hidden">
-        <div className="overflow-x-auto">
+      {deliveries.length === 0 ? (
+        <div className="bg-white dark:bg-slate-900 border rounded-2xl p-10 text-center">
+          <h2 className="text-xl font-semibold">No delivery requests found</h2>
+        </div>
+      ) : (
+        <div className="overflow-x-auto bg-white dark:bg-slate-900 rounded-2xl border">
           <table className="w-full">
             <thead>
-              <tr className="border-b bg-slate-50 dark:bg-slate-950">
-                <th className="p-4 text-left">Book</th>
-                <th className="p-4 text-left">Borrower</th>
-                <th className="p-4 text-left">Fee</th>
-                <th className="p-4 text-left">Status</th>
-                <th className="p-4 text-left">Action</th>
+              <tr className="border-b">
+                <th className="px-6 py-4 text-left">Client</th>
+
+                <th className="px-6 py-4 text-left">Book</th>
+
+                <th className="px-6 py-4 text-left">Date</th>
+
+                <th className="px-6 py-4 text-left">Status</th>
+
+                <th className="px-6 py-4 text-center">Action</th>
               </tr>
             </thead>
 
             <tbody>
-              {deliveries.map((item) => (
-                <tr key={item._id} className="border-b">
-                  <td className="p-4">
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src={item.bookImage}
-                        alt=""
-                        width={60}
-                        height={80}
-                        className="rounded-lg object-cover"
-                      />
+              {deliveries.map((delivery) => (
+                <tr key={delivery._id} className="border-b">
+                  <td className="px-6 py-4">{delivery.userName}</td>
 
-                      <div>
-                        <h3 className="font-semibold">{item.bookTitle}</h3>
-                      </div>
-                    </div>
+                  <td className="px-6 py-4">{delivery.bookTitle}</td>
+
+                  <td className="px-6 py-4">
+                    {new Date(delivery.requestedAt).toLocaleDateString()}
                   </td>
 
-                  <td className="p-4">
-                    <div>
-                      <p className="font-medium">{item.borrowerName}</p>
-
-                      <p className="text-sm text-slate-500">
-                        {item.borrowerEmail}
-                      </p>
-                    </div>
-                  </td>
-
-                  <td className="p-4">${item.deliveryFee}</td>
-
-                  <td className="p-4">
-                    <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm">
-                      {item.status}
+                  <td className="px-6 py-4">
+                    <span
+                      className={`
+                        px-3 py-1 rounded-full text-sm
+                        ${
+                          delivery.status === "Pending"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : delivery.status === "Dispatched"
+                              ? "bg-blue-100 text-blue-700"
+                              : "bg-green-100 text-green-700"
+                        }
+                      `}
+                    >
+                      {delivery.status}
                     </span>
                   </td>
 
-                  <td className="p-4">
-                    <select
-                      value={item.status}
-                      onChange={(e) =>
-                        handleStatusChange(item._id, e.target.value)
-                      }
-                      className="border rounded-xl px-3 py-2"
-                    >
-                      <option>Requested</option>
-
-                      <option>Approved</option>
-
-                      <option>Picked Up</option>
-
-                      <option>In Transit</option>
-
-                      <option>Delivered</option>
-
-                      <option>Cancelled</option>
-                    </select>
+                  <td className="px-6 py-4 text-center">
+                    {delivery.status !== "Delivered" ? (
+                      <button
+                        onClick={() => handleStatusUpdate(delivery._id)}
+                        className="px-4 py-2 rounded-lg bg-indigo-600 text-white"
+                      >
+                        Update Status
+                      </button>
+                    ) : (
+                      <span className="text-green-600 font-medium">
+                        Completed
+                      </span>
+                    )}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-
-          {deliveries.length === 0 && (
-            <div className="text-center py-16 text-slate-500">
-              No delivery requests found.
-            </div>
-          )}
         </div>
-      </div>
+      )}
     </div>
   );
 }
