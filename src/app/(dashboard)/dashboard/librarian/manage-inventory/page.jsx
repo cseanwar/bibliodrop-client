@@ -9,17 +9,24 @@ import {
   deleteBook,
   toggleBookStatus,
 } from "@/lib/actions/books";
-import { useRouter } from "next/navigation";
+
 import EditModal from "@/components/EditModal";
+import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function ManageInventoryPage() {
-  const router = useRouter();
   const { data: session } = useSession();
 
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedBook, setSelectedBook] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [deleteBookId, setDeleteBookId] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
+  const [toggleLoading, setToggleLoading] = useState(null);
 
   const fetchBooks = async () => {
     try {
@@ -44,16 +51,9 @@ export default function ManageInventoryPage() {
     fetchBooks();
   }, [session]);
 
-  const handleDelete = async (id) => {
-    const confirmDelete = confirm("Delete this book?");
-
-    if (!confirmDelete) return;
-
-    await deleteBook(id);
-
-    toast.success("Book deleted");
-
-    fetchBooks();
+  const handleDelete = (id) => {
+    setDeleteBookId(id);
+    setShowDeleteModal(true);
   };
 
   const handleEdit = (book) => {
@@ -61,8 +61,27 @@ export default function ManageInventoryPage() {
     setIsModalOpen(true);
   };
 
+  const confirmDeleteBook = async () => {
+    try {
+      setDeleteLoading(true);
+      await deleteBook(deleteBookId);
+
+      toast.success("Book deleted successfully");
+
+      fetchBooks();
+      setShowDeleteModal(false);
+      setDeleteBookId(null);
+    } catch (error) {
+      toast.error("Delete failed");
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
   const handleToggle = async (id) => {
     try {
+      setToggleLoading(id);
+
       await toggleBookStatus(id);
 
       toast.success("Status updated");
@@ -70,11 +89,13 @@ export default function ManageInventoryPage() {
       fetchBooks();
     } catch {
       toast.error("Cannot publish pending book");
+    } finally {
+      setToggleLoading(null);
     }
   };
 
   if (loading) {
-    return <div className="text-center py-10">Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -89,7 +110,7 @@ export default function ManageInventoryPage() {
 
       <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
         {/* Header */}
-        <div className="hidden md:grid grid-cols-[3fr_1.3fr_1fr_1fr_1fr] gap-4 px-6 py-4 border-b border-slate-200 dark:border-slate-800 font-semibold text-slate-700 dark:text-slate-300">
+        <div className="hidden md:grid grid-cols-[3fr_1.3fr_1fr_1fr_1.8fr] gap-4 px-6 py-4 border-b border-slate-200 dark:border-slate-800 font-bold text-xl text-slate-700 dark:text-slate-300">
           <p>Book</p>
           <p>Status</p>
           <p>Category</p>
@@ -167,10 +188,34 @@ export default function ManageInventoryPage() {
               >
                 Delete
               </button>
+
+              {book.status !== "Pending Approval" && (
+                <button
+                  type="button"
+                  onClick={() => handleToggle(book._id)}
+                  className={`px-4 py-2 rounded-xl text-white
+        ${
+          book.status === "Published"
+            ? "bg-orange-500 hover:bg-orange-600"
+            : "bg-green-500 hover:bg-green-600"
+        }
+      `}
+                >
+                  {book.status === "Published" ? "Unpublish" : "Publish"}
+                </button>
+              )}
             </div>
           </div>
         ))}
       </div>
+      <DeleteConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={confirmDeleteBook}
+        loading={deleteLoading}
+        title="Delete Book"
+        message="Are you sure you want to delete this book? This action cannot be undone."
+      />
       <EditModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

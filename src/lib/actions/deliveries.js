@@ -37,13 +37,13 @@ export const getLibrarianDeliveries = async (email) => {
   );
 };
 
-export const updateDeliveryStatus = async (id) => {
-  return serverMutation(
-    `/api/deliveries/status/${id}`,
-    {},
-    "PATCH"
-  );
-};
+export const updateDeliveryStatus = async (id, status) => {
+    return serverMutation(
+      `/api/deliveries/${id}`,
+      { status },
+      "PATCH"
+    );
+  };
 
 export const getUserDeliveries = async (email) => {
   return serverFetch(

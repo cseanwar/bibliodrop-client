@@ -2,14 +2,22 @@
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-
-import { getPendingBooks, approveBook, deletePendingBook } from "@/lib/actions/admin";
+import {
+  getPendingBooks,
+  approveBook,
+  deletePendingBook,
+} from "@/lib/actions/admin";
 import Image from "next/image";
-import { Button } from "@heroui/react";
+import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function BookApprovalTable() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [deleteBookId, setDeleteBookId] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const fetchBooks = async () => {
     try {
@@ -43,22 +51,31 @@ export default function BookApprovalTable() {
     }
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await deletePendingBook(id);
+  const handleDelete = (id) => {
+    setDeleteBookId(id);
 
-      toast.success("Book deleted");
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteBook = async () => {
+    try {
+      setDeleteLoading(true);
+      await deletePendingBook(deleteBookId);
+
+      toast.success("Book deleted successfully");
 
       fetchBooks();
+      setShowDeleteModal(false);
+      setDeleteBookId(null);
     } catch (error) {
-      console.error(error);
-
       toast.error("Delete failed");
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
   if (loading) {
-    return <div className="text-center py-10">Loading books...</div>;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -158,6 +175,13 @@ export default function BookApprovalTable() {
                       </button>
 
                       <button
+                        type="button"
+                        onClick={() => handleDelete(book._id)}
+                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl"
+                      >
+                        Delete
+                      </button>
+                      {/* <button
                         style={{
                           backgroundColor: "red",
                           color: "white",
@@ -168,7 +192,7 @@ export default function BookApprovalTable() {
                         onClick={() => handleDelete(book._id)}
                       >
                         Delete
-                      </button>
+                      </button> */}
                     </div>
                   </td>
                 </tr>
@@ -178,29 +202,14 @@ export default function BookApprovalTable() {
         )}
       </div>
 
-      {/* <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b bg-slate-50 dark:bg-slate-800">
-              <th className="text-left px-6 py-4">Book</th>
-              <th className="text-left px-6 py-4">Librarian</th>
-              <th className="text-left px-6 py-4">Status</th>
-              <th className="text-center px-6 py-4">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {books.map((book) => (
-              <tr
-                key={book._id}
-                className="border-b border-slate-200 dark:border-slate-700"
-              >
-               
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div> */}
+      <DeleteConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={confirmDeleteBook}
+        loading={deleteLoading}
+        title="Delete Book"
+        message="Are you sure you want to delete this book? This action cannot be undone."
+      />
     </div>
   );
 }

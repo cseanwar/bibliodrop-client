@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { useSession } from "@/lib/auth-client";
 
 import { getUserDeliveries } from "@/lib/actions/deliveries";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function DeliveryHistoryPage() {
   const { data: session } = useSession();
@@ -32,7 +33,7 @@ export default function DeliveryHistoryPage() {
   }, [session]);
 
   if (loading) {
-    return <div className="py-10 text-center">Loading...</div>;
+      return <LoadingSpinner />;
   }
 
   return (

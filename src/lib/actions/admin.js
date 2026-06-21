@@ -76,3 +76,7 @@ export const deleteBookAdmin = async (id) => {
 export const getAdminStats = async () => {
   return serverFetch("/api/admin/stats");
 };
+
+export const getAllTransactions = async () => {
+    return serverFetch("/api/admin/transactions");
+  };

@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { useSession } from "@/lib/auth-client";
 import { getLibrarianStats } from "@/lib/actions/librarian";
+import { FaBook, FaMoneyBillWave, FaShippingFast } from "react-icons/fa";
+import StatCard from "@/components/StateCard";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function LibrarianDashboard() {
   const { data: session } = useSession();
@@ -16,7 +19,7 @@ export default function LibrarianDashboard() {
   }, [session]);
 
   if (!stats) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -28,25 +31,23 @@ export default function LibrarianDashboard() {
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border">
-          <h3 className="text-slate-500 text-base">Total Books Listed</h3>
+        <StatCard
+          title="Books Listed"
+          value={stats.totalBooksListed}
+          icon={<FaBook />}
+        />
 
-          <p className="text-4xl font-bold mt-2">{stats.totalBooksListed}</p>
-        </div>
+        <StatCard
+          title="Total Earnings"
+          value={`$${stats.totalEarnings}`}
+          icon={<FaMoneyBillWave />}
+        />
 
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border">
-          <h3 className="text-slate-500 text-base">Total Earnings</h3>
-
-          <p className="text-4xl font-bold mt-2">${stats.totalEarnings}</p>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border">
-          <h3 className="text-slate-500 text-base">Pending Requests</h3>
-
-          <p className="text-4xl font-bold mt-2">
-            {stats.activePendingRequests}
-          </p>
-        </div>
+        <StatCard
+          title="Pending Requests"
+          value={stats.activePendingRequests}
+          icon={<FaShippingFast />}
+        />
       </div>
     </div>
   );

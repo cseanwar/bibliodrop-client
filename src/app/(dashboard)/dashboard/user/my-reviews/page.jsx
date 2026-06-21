@@ -2,22 +2,24 @@
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-
 import { useSession } from "@/lib/auth-client";
-
 import { getUserReviews, deleteReview } from "@/lib/actions/reviews";
 
 import EditReviewModal from "@/components/EditReviewModal";
+import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function MyReviewsPage() {
   const { data: session } = useSession();
-
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [selectedReview, setSelectedReview] = useState(null);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [deleteReviewId, setDeleteReviewId] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const fetchReviews = async () => {
     try {
@@ -37,22 +39,34 @@ export default function MyReviewsPage() {
     }
   }, [session]);
 
-  const handleDelete = async (id) => {
-    if (!confirm("Delete review?")) return;
+  const handleDelete = (id) => {
+    setDeleteReviewId(id);
 
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteReview = async () => {
     try {
-      await deleteReview(id);
+      setDeleteLoading(true);
 
-      toast.success("Review deleted");
+      await deleteReview(deleteReviewId);
+
+      toast.success("Review deleted successfully");
 
       fetchReviews();
-    } catch {
+
+      setShowDeleteModal(false);
+
+      setDeleteReviewId(null);
+    } catch (error) {
       toast.error("Delete failed");
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
   if (loading) {
-    return <div className="py-10 text-center">Loading reviews...</div>;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -91,8 +105,9 @@ export default function MyReviewsPage() {
                 </button>
 
                 <button
+                  type="button"
                   onClick={() => handleDelete(review._id)}
-                  className="bg-red-600 text-white px-4 py-2 rounded-lg"
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl"
                 >
                   Delete
                 </button>
@@ -101,6 +116,15 @@ export default function MyReviewsPage() {
           ))}
         </div>
       )}
+
+      <DeleteConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={confirmDeleteReview}
+        loading={deleteLoading}
+        title="Delete Review"
+        message="Are you sure you want to delete this review? This action cannot be undone."
+      />
 
       <EditReviewModal
         isOpen={isModalOpen}

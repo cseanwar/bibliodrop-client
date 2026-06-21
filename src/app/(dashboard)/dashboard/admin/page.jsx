@@ -5,6 +5,9 @@ import toast from "react-hot-toast";
 
 import { getAdminStats } from "@/lib/actions/admin";
 import { PieChart, Pie, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { FaUsers, FaBook, FaTruck, FaDollarSign } from "react-icons/fa";
+import StatCard from "@/components/StateCard";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6"];
 
@@ -28,7 +31,7 @@ export default function AdminDashboardPage() {
   };
 
   if (!stats) {
-    return <div className="text-center py-10">Loading dashboard...</div>;
+      return <LoadingSpinner />;
   }
 
   const chartData = stats.categoryData.map((item) => ({
@@ -49,29 +52,21 @@ export default function AdminDashboardPage() {
       {/* Stats */}
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        <div className="bg-white dark:bg-slate-900 border rounded-2xl p-6">
-          <p className="text-slate-500">Total Users</p>
+        <StatCard title="Users" value={stats.totalUsers} icon={<FaUsers />} />
 
-          <h2 className="text-4xl font-bold mt-2">{stats.totalUsers}</h2>
-        </div>
+        <StatCard title="Books" value={stats.totalBooks} icon={<FaBook />} />
 
-        <div className="bg-white dark:bg-slate-900 border rounded-2xl p-6">
-          <p className="text-slate-500">Total Books</p>
+        <StatCard
+          title="Deliveries"
+          value={stats.totalDeliveries}
+          icon={<FaTruck />}
+        />
 
-          <h2 className="text-4xl font-bold mt-2">{stats.totalBooks}</h2>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 border rounded-2xl p-6">
-          <p className="text-slate-500">Total Deliveries</p>
-
-          <h2 className="text-4xl font-bold mt-2">{stats.totalDeliveries}</h2>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 border rounded-2xl p-6">
-          <p className="text-slate-500">Total Revenue</p>
-
-          <h2 className="text-4xl font-bold mt-2">${stats.totalRevenue}</h2>
-        </div>
+        <StatCard
+          title="Revenue"
+          value={`$${stats.totalRevenue}`}
+          icon={<FaDollarSign />}
+        />
       </div>
 
       {/* Chart */}

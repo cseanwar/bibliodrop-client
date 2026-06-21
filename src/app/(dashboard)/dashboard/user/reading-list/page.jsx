@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 
 import { useSession } from "@/lib/auth-client";
 import { getReadingList } from "@/lib/actions/deliveries";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function ReadingListPage() {
   const { data: session } = useSession();
@@ -34,7 +35,7 @@ export default function ReadingListPage() {
   }, [session]);
 
   if (loading) {
-    return <div className="py-10 text-center">Loading reading list...</div>;
+    return <LoadingSpinner />;
   }
 
   return (

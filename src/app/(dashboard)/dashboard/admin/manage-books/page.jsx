@@ -9,10 +9,16 @@ import {
   toggleBookStatusAdmin,
   deleteBookAdmin,
 } from "@/lib/actions/admin";
+import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function ManageBooksPage() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [deleteBookId, setDeleteBookId] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const fetchBooks = async () => {
     try {
@@ -43,24 +49,31 @@ export default function ManageBooksPage() {
     }
   };
 
-  const handleDelete = async (id) => {
-    const confirmDelete = confirm("Delete this book permanently?");
+  const handleDelete = (id) => {
+    setDeleteBookId(id);
 
-    if (!confirmDelete) return;
+    setShowDeleteModal(true);
+  };
 
-    try {
-      await deleteBookAdmin(id);
-
-      toast.success("Book deleted");
-
-      fetchBooks();
-    } catch {
-      toast.error("Delete failed");
-    }
+  const confirmDeleteBook = async () => {
+      try {
+        setDeleteLoading(true);
+        await deleteBookAdmin(deleteBookId);
+  
+        toast.success("Book deleted successfully");
+  
+        fetchBooks();
+        setShowDeleteModal(false);
+        setDeleteBookId(null);
+      } catch (error) {
+        toast.error("Delete failed");
+      } finally {
+        setDeleteLoading(false);
+      }
   };
 
   if (loading) {
-    return <div className="text-center py-10">Loading books...</div>;
+      return <LoadingSpinner />;
   }
 
   return (
@@ -143,8 +156,9 @@ export default function ManageBooksPage() {
                       </button>
 
                       <button
+                        type="button"
                         onClick={() => handleDelete(book._id)}
-                        className="bg-red-600 text-white px-4 py-2 rounded-lg"
+                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl"
                       >
                         Delete
                       </button>
@@ -156,6 +170,14 @@ export default function ManageBooksPage() {
           </table>
         </div>
       )}
+      <DeleteConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={confirmDeleteBook}
+        loading={deleteLoading}
+        title="Delete Book"
+        message="Are you sure you want to delete this book? This action cannot be undone."
+      />
     </div>
   );
 }

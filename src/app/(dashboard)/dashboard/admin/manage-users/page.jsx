@@ -2,12 +2,19 @@
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-
 import { getAllUsers, updateUserRole, deleteUser } from "@/lib/actions/users";
+import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function ManageUsersPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [updatingRoleId, setUpdatingRoleId] = useState(null);
+
+  const [deleteUserId, setDeleteUserId] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const fetchUsers = async () => {
     try {
@@ -17,7 +24,7 @@ export default function ManageUsersPage() {
       console.error(error);
       toast.error("Failed to load users");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -27,29 +34,45 @@ export default function ManageUsersPage() {
 
   const handleRoleChange = async (id, role) => {
     try {
+      setUpdatingRoleId(id);
+
       await updateUserRole(id, role);
+
       toast.success(`Role updated to ${role}`);
+
       fetchUsers();
     } catch {
       toast.error("Failed to update role");
+    } finally {
+      setUpdatingRoleId(null);
     }
   };
 
-  const handleDelete = async (id) => {
-    const confirmDelete = confirm("Are you sure you want to delete this user?");
-    if (!confirmDelete) return;
+  const handleDelete = (id) => {
+    setDeleteUserId(id);
 
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteUser = async () => {
     try {
-      await deleteUser(id);
-      toast.success("User deleted");
+      setDeleteLoading(true);
+      await deleteUser(deleteUserId);
+
+      toast.success("User deleted successfully");
+
       fetchUsers();
-    } catch {
+      setShowDeleteModal(false);
+      setDeleteUserId(null);
+    } catch (error) {
       toast.error("Delete failed");
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
   if (loading) {
-    return <div className="py-10 text-center text-slate-400">Loading users...</div>;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -60,7 +83,8 @@ export default function ManageUsersPage() {
           <p className="text-slate-500 mt-2">Manage user roles and accounts.</p>
         </div>
         <div className="bg-slate-800/50 border border-slate-700/50 px-4 py-2 rounded-xl text-sm font-medium text-slate-300">
-          Total Users: <span className="text-white font-bold">{users.length}</span>
+          Total Users:{" "}
+          <span className="text-white font-bold">{users.length}</span>
         </div>
       </div>
 
@@ -82,8 +106,8 @@ export default function ManageUsersPage() {
 
             <tbody className="divide-y divide-slate-800/60">
               {users.map((user) => (
-                <tr 
-                  key={user._id} 
+                <tr
+                  key={user._id}
                   className="hover:bg-slate-800/30 transition-colors align-middle"
                 >
                   {/* Name */}
@@ -119,26 +143,34 @@ export default function ManageUsersPage() {
                     <div className="flex justify-end items-center gap-2">
                       {user.role !== "admin" && (
                         <button
+                          disabled={updatingRoleId === user._id}
                           onClick={() => handleRoleChange(user._id, "admin")}
-                          className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-xs px-3 py-1.5 rounded-lg transition-all"
+                          className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 disabled:opacity-50 px-3 py-1.5 rounded-lg text-xs"
                         >
-                          Make Admin
+                          {updatingRoleId === user._id
+                            ? "Updating..."
+                            : "Make Admin"}
                         </button>
                       )}
 
                       {user.role !== "librarian" && (
                         <button
-                          onClick={() => handleRoleChange(user._id, "librarian")}
-                          className="bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-500/30 font-medium text-xs px-3 py-1.5 rounded-lg transition-all"
+                          disabled={updatingRoleId === user._id}
+                          onClick={() =>
+                            handleRoleChange(user._id, "librarian")
+                          }
+                          className="bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-500/30 disabled:opacity-50 px-3 py-1.5 rounded-lg text-xs"
                         >
-                          Make Librarian
+                          {updatingRoleId === user._id
+                            ? "Updating..."
+                            : "Make Librarian"}
                         </button>
                       )}
 
                       {user.role !== "admin" && (
                         <button
                           onClick={() => handleDelete(user._id)}
-                          className="bg-rose-950/40 hover:bg-rose-600 text-rose-400 hover:text-white border border-rose-900/50 font-medium text-xs px-3 py-1.5 rounded-lg transition-all"
+                          className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-xs"
                         >
                           Delete
                         </button>
@@ -151,6 +183,14 @@ export default function ManageUsersPage() {
           </table>
         </div>
       )}
+      <DeleteConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={confirmDeleteUser}
+        loading={deleteLoading}
+        title="Delete User"
+        message="Are you sure you want to delete this user? This action cannot be undone."
+      />
     </div>
   );
 }

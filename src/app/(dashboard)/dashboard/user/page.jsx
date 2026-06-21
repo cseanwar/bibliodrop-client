@@ -7,7 +7,6 @@ import {
   getUserDashboardStats,
   getUserChartData,
 } from "@/lib/actions/userDashboard";
-
 import {
   ResponsiveContainer,
   BarChart,
@@ -16,6 +15,9 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
+import { FaBookOpen, FaTruck, FaDollarSign } from "react-icons/fa";
+import StatCard from "@/components/StateCard";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function UserDashboardPage() {
   const { data: session } = useSession();
@@ -40,7 +42,7 @@ export default function UserDashboardPage() {
   };
 
   if (!stats) {
-    return <div className="py-10 text-center">Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -54,23 +56,23 @@ export default function UserDashboardPage() {
       {/* Stats */}
 
       <div className="grid md:grid-cols-3 gap-6">
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border p-6">
-          <h3 className="text-slate-500">Books Read</h3>
+        <StatCard
+          title="Books Read"
+          value={stats.totalBooksRead}
+          icon={<FaBookOpen />}
+        />
 
-          <p className="text-4xl font-bold mt-2">{stats.totalBooksRead}</p>
-        </div>
+        <StatCard
+          title="Pending Deliveries"
+          value={stats.pendingDeliveries}
+          icon={<FaTruck />}
+        />
 
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border p-6">
-          <h3 className="text-slate-500">Pending Deliveries</h3>
-
-          <p className="text-4xl font-bold mt-2">{stats.pendingDeliveries}</p>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border p-6">
-          <h3 className="text-slate-500">Total Spent</h3>
-
-          <p className="text-4xl font-bold mt-2">${stats.totalSpent}</p>
-        </div>
+        <StatCard
+          title="Total Spent"
+          value={`$${stats.totalSpent}`}
+          icon={<FaDollarSign />}
+        />
       </div>
 
       {/* Chart */}
