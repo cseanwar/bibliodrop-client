@@ -110,7 +110,7 @@ export default function ManageInventoryPage() {
 
       <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
         {/* Header */}
-        <div className="hidden md:grid grid-cols-[3fr_1.3fr_1fr_1fr_1.8fr] gap-4 px-6 py-4 border-b border-slate-200 dark:border-slate-800 font-bold text-xl text-slate-700 dark:text-slate-300">
+        <div className="hidden md:grid grid-cols-[3fr_1.3fr_1fr_1fr_2.1fr] gap-4 px-6 py-4 border-b border-slate-200 dark:border-slate-800 font-bold text-xl text-slate-700 dark:text-slate-300">
           <p>Book</p>
           <p>Status</p>
           <p>Category</p>

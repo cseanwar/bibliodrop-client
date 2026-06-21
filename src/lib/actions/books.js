@@ -36,6 +36,20 @@ export const toggleBookStatus = async (id) => {
   );
 };
 
+export const getAllBooks = async (
+  search = "",
+  category = "",
+  sort = ""
+) => {
+  return serverFetch(
+    `/api/books?search=${search}&category=${category}&sort=${sort}`
+  );
+};
+
+export const getBookDetails = async (id) => {
+  return serverFetch(`/api/books/${id}`);
+};
+
 // export const getPendingBooks = async () => {
 //   return serverFetch("/api/books/pending");
 // };
