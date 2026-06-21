@@ -71,7 +71,7 @@ export default function DashboardSidebar() {
     {
       label: "Reading List",
       icon: FaBook,
-      href: "/dashboard/user/my-reading-list",
+      href: "/dashboard/user/reading-list",
     },
     {
       label: "My Reviews",

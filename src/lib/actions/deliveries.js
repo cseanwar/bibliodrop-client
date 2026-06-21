@@ -50,3 +50,9 @@ export const getUserDeliveries = async (email) => {
     `/api/deliveries/user/${email}`
   );
 };
+
+export const getReadingList = async (email) => {
+  return serverFetch(
+    `/api/reading-list/${email}`
+  );
+};
