@@ -15,7 +15,7 @@ import {
 import { createCheckoutSession } from "@/lib/actions/payment";
 
 import CardSkeleton from "@/components/CardSkeleton";
-import BookCard from "@/components/books/BookCard";
+import BookCard from "@/components/BookCard";
 
 export default function BookDetailsPage() {
   const { id } = useParams();

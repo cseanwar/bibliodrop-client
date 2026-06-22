@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-// import { getAllBooks } from "@/lib/actions/publicBooks";
-import BookCard from "@/components/books/BookCard";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import BookCard from "@/components/BookCard";
+// import LoadingSpinner from "@/components/LoadingSpinner";
 import { getAllBooks } from "@/lib/actions/books";
 import CardSkeleton from "@/components/CardSkeleton";
 

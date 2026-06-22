@@ -28,8 +28,7 @@ export default function PaymentSuccessPage() {
 
   const updateDeliveryRequest = async () => {
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/delivery-request`,
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/delivery-request`,
         {
           method: "POST",
           headers: {
