@@ -4,7 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function BookCard({ book }) {
-  const isUnavailable = book.status === "Checked Out";
+  // const isUnavailable = [
+  //   "Pending Delivery",
+  //   "Dispatched",
+  //   "Delivered",
+  // ].includes(book.status);
+
+  const isUnavailable = book.availability === "Checked Out";
 
   return (
     <Link href={`/books/${book._id}`} className="block h-full">
@@ -22,11 +28,13 @@ export default function BookCard({ book }) {
             />
           </div>
 
-          {book.status === "Checked Out" && (
-            <span className="absolute top-3 right-3 bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded-md">
-              Unavailable
-            </span>
-          )}
+          <span
+            className={`absolute top-3 right-3 px-3 py-1 rounded-md text-xs font-semibold
+    ${isUnavailable ? "bg-red-600 text-white" : "bg-green-600 text-white"}
+  `}
+          >
+            {isUnavailable ? "Checked Out" : "Available"}
+          </span>
 
           {/* {isUnavailable && (
             <span className="absolute top-3 right-3 bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow z-10">

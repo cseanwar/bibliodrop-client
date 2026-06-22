@@ -309,7 +309,7 @@ shadow-sm
 
                     {/* Dashboard */}
                     <Link
-                      href="/dashboard"
+                      href={`/dashboard/${session?.user?.role}`}
                       onClick={() => setDropdownOpen(false)}
                       className="
           flex

@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import BookCard from "@/components/books/BookCard";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { getAllBooks } from "@/lib/actions/books";
+import CardSkeleton from "@/components/CardSkeleton";
 
 export default function BrowseBooksPage() {
   const [books, setBooks] = useState([]);
@@ -52,7 +53,7 @@ export default function BrowseBooksPage() {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
+    <div className="container mx-auto px-4 py-10">
       {/* Header */}
       <div className="mb-10">
         <h1 className="text-4xl font-bold">Browse Books</h1>
@@ -106,7 +107,11 @@ export default function BrowseBooksPage() {
 
       {/* Loading */}
       {loading ? (
-        <LoadingSpinner />
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_, index) => (
+            <CardSkeleton key={index} />
+          ))}
+        </div>
       ) : books.length === 0 ? (
         /* Empty State */
         <div className="text-center py-20 border rounded-3xl">

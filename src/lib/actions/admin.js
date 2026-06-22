@@ -79,4 +79,4 @@ export const getAdminStats = async () => {
 
 export const getAllTransactions = async () => {
     return serverFetch("/api/admin/transactions");
-  };
+};

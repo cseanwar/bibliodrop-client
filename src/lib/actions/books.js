@@ -50,6 +50,16 @@ export const getBookDetails = async (id) => {
   return serverFetch(`/api/books/${id}`);
 };
 
+export const getBookById = async (id) => {
+  return serverFetch(`/api/books/${id}`);
+};
+
+export const getRelatedBooks = async ( category, bookId ) => {
+  return serverFetch(
+    `/api/books/related/${category}/${bookId}`
+  );
+};
+
 // export const getPendingBooks = async () => {
 //   return serverFetch("/api/books/pending");
 // };

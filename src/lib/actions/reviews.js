@@ -11,6 +11,12 @@ export const getUserReviews = async (email) => {
   );
 };
 
+export const getReviewsByBook = async ( bookId ) => {
+  return serverFetch(
+    `/api/reviews/book/${bookId}`
+  );
+};
+
 export const addReview = async (data) => {
   return serverMutation(
     "/api/reviews",
@@ -18,10 +24,7 @@ export const addReview = async (data) => {
   );
 };
 
-export const updateReview = async (
-  id,
-  data
-) => {
+export const updateReview = async ( id, data ) => {
   return serverMutation(
     `/api/reviews/${id}`,
     data,
@@ -34,5 +37,11 @@ export const deleteReview = async (id) => {
     `/api/reviews/${id}`,
     {},
     "DELETE"
+  );
+};
+
+export const canReviewBook = async ( bookId, email ) => {
+  return serverFetch(
+    `/api/reviews/can-review/${bookId}/${email}`
   );
 };

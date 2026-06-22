@@ -36,17 +36,27 @@ export default function ManageDeliveriesPage() {
     fetchDeliveries();
   }, [session]);
 
+  const getNextStatus = (status) => {
+    switch (status) {
+      case "Pending":
+        return "Approved";
+
+      case "Approved":
+        return "Shipped";
+
+      case "Shipped":
+        return "Delivered";
+
+      default:
+        return null;
+    }
+  };
+
   const handleStatusChange = async (delivery) => {
     try {
-      let nextStatus = "";
+      const nextStatus = getNextStatus(delivery.status);
 
-      if (delivery.status === "Pending") {
-        nextStatus = "Dispatched";
-      } else if (delivery.status === "Dispatched") {
-        nextStatus = "Delivered";
-      } else {
-        return;
-      }
+      if (!nextStatus) return;
 
       await updateDeliveryStatus(delivery._id, nextStatus);
 
@@ -59,7 +69,7 @@ export default function ManageDeliveriesPage() {
   };
 
   if (loading) {
-      return <LoadingSpinner />;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -108,9 +118,11 @@ export default function ManageDeliveriesPage() {
                       ${
                         delivery.status === "Pending"
                           ? "bg-yellow-100 text-yellow-700"
-                          : delivery.status === "Dispatched"
-                            ? "bg-blue-100 text-blue-700"
-                            : "bg-green-100 text-green-700"
+                          : delivery.status === "Approved"
+                            ? "bg-indigo-100 text-indigo-700"
+                            : delivery.status === "Shipped"
+                              ? "bg-blue-100 text-blue-700"
+                              : "bg-green-100 text-green-700"
                       }`}
                     >
                       {delivery.status}
@@ -118,17 +130,15 @@ export default function ManageDeliveriesPage() {
                   </td>
 
                   <td className="px-6 py-4 text-center">
-                    {delivery.status !== "Delivered" ? (
+                    {getNextStatus(delivery.status) ? (
                       <button
                         onClick={() => handleStatusChange(delivery)}
-                        className="bg-indigo-600 text-white px-4 py-2 rounded-lg"
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg"
                       >
-                        {delivery.status === "Pending"
-                          ? "Dispatch"
-                          : "Mark Delivered"}
+                        Mark {getNextStatus(delivery.status)}
                       </button>
                     ) : (
-                      <span className="text-green-600 font-medium">
+                      <span className="text-green-600 font-semibold">
                         Completed
                       </span>
                     )}
