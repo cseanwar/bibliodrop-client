@@ -27,6 +27,10 @@ export default function TransactionsPage() {
     fetchTransactions();
   }, []);
 
+  useEffect(() => {
+    console.log(transactions);
+  }, [transactions]);
+
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -61,23 +65,30 @@ export default function TransactionsPage() {
             </thead>
 
             <tbody>
-              {transactions.map((txn) => (
-                <tr key={txn._id} className="border-b">
-                  <td className="px-6 py-4 font-mono text-sm">
-                    {txn.transactionId}
-                  </td>
+              {transactions.map(
+                (txn) => (
+                  console.log(txn),
+                  (
+                    <tr key={txn._id} className="border-b">
+                      <td className="px-6 py-4 font-mono text-sm">{txn._id}</td>
 
-                  <td className="px-6 py-4">{txn.userEmail}</td>
+                      <td className="px-6 py-4">{txn.userEmail}</td>
 
-                  <td className="px-6 py-4">{txn.librarianEmail}</td>
+                      <td className="px-6 py-4">{txn.librarianEmail}</td>
 
-                  <td className="px-6 py-4 font-semibold">${txn.amount}</td>
+                      <td className="px-6 py-4 font-semibold">
+                        ${Number(txn.amount || 0).toFixed(2)}
+                      </td>
 
-                  <td className="px-6 py-4">
-                    {new Date(txn.createdAt).toLocaleDateString()}
-                  </td>
-                </tr>
-              ))}
+                      <td className="px-6 py-4">
+                        {txn.createdAt
+                          ? new Date(txn.createdAt).toLocaleDateString()
+                          : "-"}
+                      </td>
+                    </tr>
+                  )
+                ),
+              )}
             </tbody>
           </table>
         </div>
