@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
 import toast from "react-hot-toast";
+import { FaHeart } from "react-icons/fa";
 
 import { getBookById, getRelatedBooks } from "@/lib/actions/books";
 import {
@@ -16,6 +17,7 @@ import { createCheckoutSession } from "@/lib/actions/payment";
 
 import CardSkeleton from "@/components/CardSkeleton";
 import BookCard from "@/components/BookCard";
+import { addToWishlist } from "@/lib/actions/wishlists";
 
 export default function BookDetailsPage() {
   const { id } = useParams();
@@ -131,6 +133,16 @@ export default function BookDetailsPage() {
     }
   };
 
+  const handleWishlist = async () => {
+    try {
+      await addToWishlist(book._id, session.user.email);
+
+      toast.success("Added to wishlist");
+    } catch (error) {
+      toast.error(error.message || "Failed to add wishlist");
+    }
+  };
+
   if (!book) {
     return (
       <div className="text-center py-20 text-slate-500">Book not found.</div>
@@ -230,14 +242,6 @@ export default function BookDetailsPage() {
                     {isCheckedOut ? "Checked Out" : "Available"}
                   </p>
                 </div>
-
-                {/* <p
-                  className={`font-semibold ${
-                    isCheckedOut ? "text-red-600" : "text-green-600"
-                  }`}
-                >
-                  {isCheckedOut ? "Checked Out" : "Available"}
-                </p> */}
               </div>
 
               <div className="rounded-xl border p-4">
@@ -270,7 +274,7 @@ export default function BookDetailsPage() {
         {/* Sticky Action Panel */}
 
         <div className="lg:col-span-3">
-          <div className="top-24 rounded-3xl border p-6 shadow-sm mb-10">
+          <div className="top-24 rounded-3xl border p-6 shadow-sm mb-8">
             <div className="mb-6">
               <p className="text-sm text-slate-500">Delivery Fee</p>
 
@@ -304,9 +308,9 @@ export default function BookDetailsPage() {
               Request Delivery
             </button>
           </div>
-          {/* Librarian Card */}
 
-          <div className="rounded-2xl border p-5 bg-slate-50 dark:bg-slate-900">
+          {/* Librarian Card */}
+          <div className="rounded-2xl border p-5 bg-slate-50 dark:bg-slate-900 mb-8">
             <h3 className="font-semibold mb-2">Listed By</h3>
 
             <div className="flex items-center gap-4">
@@ -323,6 +327,14 @@ export default function BookDetailsPage() {
               </div>
             </div>
           </div>
+          {/* User wishlist card */}
+          <button
+            onClick={handleWishlist}
+            className="flex items-center gap-2 px-4 py-3 rounded-xl bg-pink-600 text-white cursor-pointer hover:bg-pink-700"
+          >
+            <FaHeart />
+            Add to Wishlist
+          </button>
         </div>
       </div>
 

@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import BookCard from "@/components/BookCard";
 import { getAllBooks } from "@/lib/actions/books";
 import CardSkeleton from "@/components/CardSkeleton";
-import { useRouter } from "next/navigation";
 import { Pagination } from "@heroui/react";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 
@@ -13,7 +12,7 @@ export default function BrowseBooksPage() {
   const [books, setBooks] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const perPage = 12;
+  const perPage = 8;
 
   const [loading, setLoading] = useState(true);
 
@@ -29,13 +28,7 @@ export default function BrowseBooksPage() {
     try {
       setLoading(true);
 
-      const data = await getAllBooks({
-  page,
-  perPage: 12,
-  search,
-  category,
-  sort,
-});
+      const data = await getAllBooks({ page, perPage, search, category, sort });
 
       setBooks(data.books);
       setTotalPages(data.totalPages);
@@ -135,7 +128,7 @@ export default function BrowseBooksPage() {
         <>
           {/* Count */}
           <div className="mb-6 text-sm text-slate-500">
-            {books.length} books found
+            Showing {books.length} books
           </div>
 
           {/* Grid */}

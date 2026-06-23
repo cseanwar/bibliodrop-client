@@ -76,8 +76,9 @@ export default function MyReviewsPage() {
       </div>
 
       {reviews.length === 0 ? (
-        <div className="bg-white rounded-2xl border p-10 text-center">
-          No reviews found
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border p-12 text-center">
+          <h2 className="font-bold text-lg mb-1">No reviews found</h2>
+          <p className="text-slate-500">You can see all your reviews in here.</p>
         </div>
       ) : (
         <div className="space-y-4">

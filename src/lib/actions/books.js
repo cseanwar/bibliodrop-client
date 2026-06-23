@@ -41,7 +41,7 @@ export const getAllBooks = async ({
   category = "",
   sort = "",
   page = 1,
-  perPage = 12,
+  perPage = 8,
 }) => {
   return serverFetch(
     `/api/books?page=${page}&perPage=${perPage}&search=${search}&category=${category}&sort=${sort}`
