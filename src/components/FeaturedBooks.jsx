@@ -12,10 +12,6 @@ export default function FeaturedBooks() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadBooks();
-  }, []);
-
   const loadBooks = async () => {
     try {
       const data = await getFeaturedBooks();
@@ -25,6 +21,10 @@ export default function FeaturedBooks() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    loadBooks();
+  }, []);
 
   if (loading) {
     return <LoadingSpinner />;

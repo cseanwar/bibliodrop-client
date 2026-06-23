@@ -36,13 +36,15 @@ export const toggleBookStatus = async (id) => {
   );
 };
 
-export const getAllBooks = async (
+export const getAllBooks = async ({
   search = "",
   category = "",
-  sort = ""
-) => {
+  sort = "",
+  page = 1,
+  perPage = 12,
+}) => {
   return serverFetch(
-    `/api/books?search=${search}&category=${category}&sort=${sort}`
+    `/api/books?page=${page}&perPage=${perPage}&search=${search}&category=${category}&sort=${sort}`
   );
 };
 

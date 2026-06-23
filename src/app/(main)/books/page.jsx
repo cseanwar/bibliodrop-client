@@ -3,12 +3,17 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import BookCard from "@/components/BookCard";
-// import LoadingSpinner from "@/components/LoadingSpinner";
 import { getAllBooks } from "@/lib/actions/books";
 import CardSkeleton from "@/components/CardSkeleton";
+import { useRouter } from "next/navigation";
+import { Pagination } from "@heroui/react";
+import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 
 export default function BrowseBooksPage() {
   const [books, setBooks] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const perPage = 12;
 
   const [loading, setLoading] = useState(true);
 
@@ -16,25 +21,31 @@ export default function BrowseBooksPage() {
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("");
 
+  useEffect(() => {
+    fetchBooks();
+  }, [page, search, category, sort]);
+
   const fetchBooks = async () => {
     try {
       setLoading(true);
 
-      const data = await getAllBooks(search, category, sort);
+      const data = await getAllBooks({
+  page,
+  perPage: 12,
+  search,
+  category,
+  sort,
+});
 
-      setBooks(data || []);
+      setBooks(data.books);
+      setTotalPages(data.totalPages);
     } catch (error) {
-      console.error(error);
-
+      console.error("BOOK ERROR:", error);
       toast.error("Failed to load books");
     } finally {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchBooks();
-  }, [search, category, sort]);
 
   const categories = [
     "Fiction",
@@ -132,6 +143,49 @@ export default function BrowseBooksPage() {
             {books.map((book) => (
               <BookCard key={book._id} book={book} />
             ))}
+          </div>
+
+          <div className="mt-6 flex items-center justify-center">
+            <Pagination className="justify-center">
+              <Pagination.Content>
+                <Pagination.Item>
+                  <Pagination.Previous
+                    isDisabled={page === 1}
+                    onPress={() => setPage((p) => p - 1)}
+                  >
+                    <Pagination.PreviousIcon>
+                      <FaArrowLeftLong />
+                      {/* <Icon icon="gravity-ui:arrow-left" /> */}
+                    </Pagination.PreviousIcon>
+                    <span>Back</span>
+                  </Pagination.Previous>
+                </Pagination.Item>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (p) => (
+                    <Pagination.Item key={p}>
+                      <Pagination.Link
+                        isActive={p === page}
+                        onPress={() => setPage(p)}
+                      >
+                        {p}
+                      </Pagination.Link>
+                    </Pagination.Item>
+                  ),
+                )}
+                <Pagination.Item>
+                  <Pagination.Next
+                    isDisabled={page === totalPages}
+                    onPress={() => setPage((p) => p + 1)}
+                  >
+                    <span>Forward</span>
+                    <Pagination.NextIcon>
+                      <FaArrowRightLong />
+                      {/* <Icon icon="gravity-ui:arrow-right" /> */}
+                    </Pagination.NextIcon>
+                  </Pagination.Next>
+                </Pagination.Item>
+              </Pagination.Content>
+            </Pagination>
           </div>
         </>
       )}

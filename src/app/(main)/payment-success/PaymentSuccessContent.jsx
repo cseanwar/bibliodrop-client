@@ -16,16 +16,6 @@ export default function PaymentSuccessContent() {
 
   const bookId = searchParams.get("bookId");
 
-  useEffect(() => {
-    if (processed) return;
-
-    if (!session?.user?.email || !bookId) return;
-
-    updateDeliveryRequest();
-
-    setProcessed(true);
-  }, [bookId, session, processed]);
-
   const updateDeliveryRequest = async () => {
     try {
       const res = await fetch(
@@ -56,6 +46,16 @@ export default function PaymentSuccessContent() {
       toast.error(error?.message || "Failed to create delivery request");
     }
   };
+
+  useEffect(() => {
+    if (processed) return;
+
+    if (!session?.user?.email || !bookId) return;
+
+    updateDeliveryRequest();
+
+    setProcessed(true);
+  }, [bookId, session, processed]);
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center">
