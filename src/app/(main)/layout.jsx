@@ -13,15 +13,6 @@ export default function RootLayout({ children }) {
       <Navbar />
       <div className="grow flex flex-col bg-zinc-50 font-sans dark:bg-black">{children}</div>
       <Footer />
-      {/* <ThemeProvider 
-          attribute="class" 
-          defaultTheme="system" 
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
-        <Toaster /> */}
     </div>
   );
 }

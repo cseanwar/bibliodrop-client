@@ -125,17 +125,22 @@ export default function Footer() {
 
               <button
                 type="button"
-                className="
-                  w-full
-                  bg-blue-600
-                  hover:bg-blue-700
-                  text-white
-                  transition
-                  py-3
-                  rounded-xl
-                  font-medium
-                  mt-3
-                "
+                className="inline-flex
+                                justify-center
+                                text-center
+                                bg-blue-600
+                                hover:bg-blue-700
+                                dark:bg-blue-500
+                                dark:hover:bg-blue-600
+                                text-white
+                                text-sm
+                                px-5
+                                py-2.5
+                                rounded-xl
+                                font-semibold
+                                shadow-lg
+                                shadow-blue-500/20
+                                transition cursor-pointer w-full"
               >
                 Subscribe
               </button>
@@ -176,8 +181,6 @@ export default function Footer() {
                     w-11
                     h-11
                     rounded-full
-                    bg-white
-                    dark:bg-slate-900
                     border
                     border-slate-300
                     dark:border-slate-700
@@ -185,6 +188,8 @@ export default function Footer() {
                     items-center
                     justify-center
                     text-slate-700
+                    bg-blue-100
+                    dark:bg-slate-800
                     dark:text-slate-300
                     hover:bg-blue-600
                     hover:text-white
@@ -192,7 +197,7 @@ export default function Footer() {
                     transition
                   "
                 >
-                  <Icon />
+                  <Icon className="text-2xl text-blue-600 dark:text-blue-400"/>
                 </motion.a>
               ))}
             </div>

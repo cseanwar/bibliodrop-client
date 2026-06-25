@@ -1,21 +1,21 @@
-console.log("API BASE URL:", process.env.NEXT_PUBLIC_API_BASE_URL);
+import { getSessionToken } from "./client-token";
+
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 /**
  * Add authorization headers if user is logged in
  */
-export const authHeader = async () => {
-  return {};
+// export const authHeader = async () => {
+//   return {};
+// }
 
-  // Example if you later need JWT:
-  // const token = cookies().get("token")?.value;
-  //
-  // return token
-  //   ? {
-  //       Authorization: `Bearer ${token}`,
-  //     }
-  //   : {};
-};
+// export const authHeader = async () => {
+//   const token = await getUserToken();
+//   const header = token ? {
+//     authorization : `Bearer ${token}`
+//   } : {};
+//   return header;
+// }
 
 /**
  * Handle API response
@@ -45,10 +45,10 @@ export const handleStatusCode = async (res) => {
  */
 export const serverFetch = async (path) => {
   const res = await fetch(`${baseUrl}${path}`, {
-    method: "GET",
-    headers: {
-      ...(await authHeader()),
-    },
+    // method: "GET",
+    // headers: {
+    //   ...(await authHeader()),
+    // },
     cache: "no-store",
   });
 
@@ -67,7 +67,58 @@ export const serverMutation = async (
     method,
     headers: {
       "Content-Type": "application/json",
-      ...(await authHeader()),
+      // ...(await authHeader()),
+    },
+    body: JSON.stringify(data),
+  });
+
+  return handleStatusCode(res);
+};
+
+export const protectedFetch = async (
+  path,
+  method = "GET",
+  body = null
+) => {
+  const token = await getSessionToken();
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}${path}`,
+    {
+      method,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      ...(body && {
+        body: JSON.stringify(body),
+      }),
+    }
+  );
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(
+      data?.message || "Request failed"
+    );
+  }
+
+  return data;
+};
+
+export const protectedMutation = async (
+  path,
+  data = {},
+  method = "POST"
+) => {
+  const token = await getSessionToken();
+
+  const res = await fetch(`${baseUrl}${path}`, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   });

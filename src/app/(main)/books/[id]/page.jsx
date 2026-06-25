@@ -218,7 +218,6 @@ export default function BookDetailsPage() {
             </div>
 
             {/* Meta */}
-
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="rounded-xl border p-4">
                 <p className="text-sm text-slate-500">Delivery Fee</p>
@@ -230,18 +229,13 @@ export default function BookDetailsPage() {
 
               <div className="rounded-xl border p-4">
                 <p className="text-sm text-slate-500">Status</p>
-
-                <div className="rounded-xl border p-4">
-                  <p className="text-sm text-slate-500">Availability</p>
-
-                  <p
-                    className={`font-semibold ${
-                      isCheckedOut ? "text-red-600" : "text-green-600"
-                    }`}
-                  >
-                    {isCheckedOut ? "Checked Out" : "Available"}
-                  </p>
-                </div>
+                <p
+                  className={`font-semibold ${
+                    isCheckedOut ? "text-red-600" : "text-green-600"
+                  }`}
+                >
+                  {isCheckedOut ? "Checked Out" : "Available"}
+                </p>
               </div>
 
               <div className="rounded-xl border p-4">
@@ -274,7 +268,7 @@ export default function BookDetailsPage() {
         {/* Sticky Action Panel */}
 
         <div className="lg:col-span-3">
-          <div className="top-24 rounded-3xl border p-6 shadow-sm mb-8">
+          <div className="rounded-2xl border p-5 bg-slate-50 dark:bg-slate-900 mb-8">
             <div className="mb-6">
               <p className="text-sm text-slate-500">Delivery Fee</p>
 

@@ -15,6 +15,7 @@ import Image from "next/image";
 import ThemeToggle from "./shared/ThemeToggle";
 import { useTheme } from "next-themes";
 import { authClient, useSession } from "@/lib/auth-client";
+import toast from "react-hot-toast";
 
 export default function Navbar() {
   const router = useRouter();

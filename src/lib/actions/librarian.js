@@ -1,5 +1,3 @@
-"use server";
-
 import { serverFetch } from "../core/server";
 
 export const getLibrarianStats = async (

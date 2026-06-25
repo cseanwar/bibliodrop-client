@@ -7,6 +7,7 @@ import { getFeaturedBooks } from "@/lib/actions/books";
 
 import BookCard from "@/components/BookCard";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import Link from "next/link";
 
 export default function FeaturedBooks() {
   const [books, setBooks] = useState([]);
@@ -40,9 +41,9 @@ export default function FeaturedBooks() {
   };
 
   return (
-    <section className="relative py-24 bg-slate-50 dark:bg-slate-950 overflow-hidden">
+    <section className="relative pt-24 bg-slate-50 dark:bg-slate-950 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-125 h-125 bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-3xl" />
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-112.5 h-112.5 bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-3xl" />
       </div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <motion.div
@@ -52,7 +53,7 @@ export default function FeaturedBooks() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <p className="text-blue-600 font-semibold mb-2 uppercase">
+          <p className="text-blue-600 dark:text-blue-400 font-semibold mb-2 uppercase">
             Latest Collection
           </p>
 
@@ -85,43 +86,39 @@ export default function FeaturedBooks() {
               transition={{
                 duration: 0.25,
               }}
-              //   initial={{ opacity: 0, y: 40 }}
-              //   whileInView={{ opacity: 1, y: 0 }}
-              //   viewport={{ once: true }}
-              //   transition={{
-              //     duration: 0.4,
-              //     delay: index * 0.1,
-              //   }}
             >
               <BookCard book={book} />
             </motion.div>
           ))}
         </div>
       </div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.4 }}
-        className="text-center mt-5"
-      >
-        <a
+      <motion.div 
+        whileHover={{ scale: 1.05 }} 
+        whileTap={{ scale: 0.95 }} 
+        className="text-center mt-5">
+        <Link
           href="/books"
           className="
-      inline-flex
-      items-center
-      px-6
-      py-3
-      rounded-xl
-      bg-blue-600
-      hover:bg-blue-700
-      text-white
-      font-semibold
-      transition
-    "
+                                inline-flex
+                                items-center
+                                justify-center
+                                bg-blue-600
+                                hover:bg-blue-700
+                                dark:bg-blue-500
+                                dark:hover:bg-blue-600
+                                text-white
+                                text-sm
+                                px-5
+                                py-2.5
+                                rounded-xl
+                                font-semibold
+                                shadow-lg
+                                shadow-blue-500/20
+                                transition
+                              "
         >
           Browse All Books
-        </a>
+        </Link>
       </motion.div>
     </section>
   );

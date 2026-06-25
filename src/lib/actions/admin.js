@@ -1,17 +1,17 @@
-"use server";
-
 import {
+  protectedFetch,
+  protectedMutation,
   serverFetch,
   serverMutation,
 } from "../core/server";
 
 /* Book Approval Queue */
 export const getPendingBooks = async () => {
-  return serverFetch("/api/books/pending");
+  return protectedFetch("/api/books/pending");
 };
 
 export const approveBook = async (id) => {
-  return serverMutation(
+  return protectedMutation(
     `/api/books/approve/${id}`,
     {},
     "PATCH"
@@ -19,7 +19,7 @@ export const approveBook = async (id) => {
 };
 
 export const deletePendingBook = async (id) => {
-  return serverMutation(
+  return protectedMutation(
     `/api/admin/books/${id}`,
     {},
     "DELETE"
@@ -28,22 +28,15 @@ export const deletePendingBook = async (id) => {
 
 /* Manage Users */
 export const getAllUsers = async () => {
-  return serverFetch("/api/users");
+  return protectedFetch("/api/users");
 };
 
-export const updateUserRole = async (
-  id,
-  role
-) => {
-  return serverMutation(
-    `/api/users/role/${id}`,
-    { role },
-    "PATCH"
-  );
+export const updateUserRole = async (id,role) => {
+  return protectedMutation(`/api/users/role/${id}`, { role }, "PATCH" );
 };
 
 export const deleteUser = async (id) => {
-  return serverMutation(
+  return protectedMutation(
     `/api/users/${id}`,
     {},
     "DELETE"
@@ -52,13 +45,13 @@ export const deleteUser = async (id) => {
 
 /* Manage All Books */
 export const getAllBooks = async () => {
-  return serverFetch("/api/admin/books");
+  return protectedFetch("/api/admin/books");
 };
 
 export const toggleBookStatusAdmin = async (
   id
 ) => {
-  return serverMutation(
+  return protectedMutation(
     `/api/admin/books/status/${id}`,
     {},
     "PATCH"
@@ -66,7 +59,7 @@ export const toggleBookStatusAdmin = async (
 };
 
 export const deleteBookAdmin = async (id) => {
-  return serverMutation(
+  return protectedMutation(
     `/api/admin/books/${id}`,
     {},
     "DELETE"
@@ -74,9 +67,9 @@ export const deleteBookAdmin = async (id) => {
 };
 
 export const getAdminStats = async () => {
-  return serverFetch("/api/admin/stats");
+  return protectedFetch("/api/admin/stats");
 };
 
 export const getAllTransactions = async () => {
-    return serverFetch("/api/admin/transactions");
+    return protectedFetch("/api/admin/transactions");
 };

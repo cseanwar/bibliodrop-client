@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 
@@ -17,16 +15,16 @@ export default function BookCard({ book }) {
           {/* Blurred background — same image, scaled to fill, heavily blurred */}
           <Image
             src={book.image}
-            alt=""
+            alt={book.title}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover scale-110 blur-xl brightness-75"
+            className="object-cover scale-110 blur-3xl brightness-75"
             aria-hidden="true"
           />
 
           {/* Sharp cover on top — fully visible, no crop */}
           <div className="absolute inset-0 flex items-center justify-center p-3 z-10">
-            <div className="relative h-full w-auto aspect-[2/3] drop-shadow-2xl group-hover:scale-105 transition-transform duration-300">
+            <div className="relative h-full w-auto aspect-2/3 drop-shadow-2xl group-hover:scale-105 transition-transform duration-300">
               <Image
                 src={book.image}
                 alt={book.title}
@@ -47,7 +45,7 @@ export default function BookCard({ book }) {
           </span>
         </div>
 
-        {/* ── Content ────────────────────────────────────────────────────── */}
+        {/* Content */}
         <div className="p-4 flex flex-col grow justify-between">
           <div>
             <h3 className="font-bold text-base text-slate-900 dark:text-white line-clamp-1 group-hover:text-blue-500 transition-colors">
