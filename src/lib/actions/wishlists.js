@@ -1,18 +1,18 @@
-import { protectedFetch, serverFetch, serverMutation } from "../core/server";
+import { protectedFetch, protectedMutation, serverFetch, serverMutation } from "../core/server";
 
 export const getWishlist = async (email) => {
-  return serverFetch(`/api/wishlist/${email}`);
+  return protectedFetch(`/api/wishlist/${email}`);
 };
 
 export const addToWishlist = async ( bookId, userEmail ) => {
-  return protectedFetch( "/api/wishlist", { bookId, userEmail }, "POST" )
+  return protectedMutation( "/api/wishlist", { bookId, userEmail }, "POST" )
 };
 
 export const removeFromWishlist = async (
   bookId,
   userEmail
 ) => {
-  return protectedFetch(
+  return protectedMutation(
     "/api/wishlist",
     {
       bookId,

@@ -114,6 +114,8 @@ export const protectedMutation = async (
 ) => {
   const token = await getSessionToken();
 
+  console.log("TOKEN:", token);
+
   const res = await fetch(`${baseUrl}${path}`, {
     method,
     headers: {
@@ -125,6 +127,24 @@ export const protectedMutation = async (
 
   return handleStatusCode(res);
 };
+// export const protectedMutation = async (
+//   path,
+//   data = {},
+//   method = "POST"
+// ) => {
+//   const token = await getSessionToken();
+
+//   const res = await fetch(`${baseUrl}${path}`, {
+//     method,
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${token}`,
+//     },
+//     body: JSON.stringify(data),
+//   });
+
+//   return handleStatusCode(res);
+// };
 
 // export const serverMutation = async (
 //   path,

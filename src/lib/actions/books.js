@@ -1,4 +1,4 @@
-import { protectedFetch, serverFetch, serverMutation } from "../core/server";
+import { protectedFetch, protectedMutation, serverFetch, serverMutation } from "../core/server";
 
 export const addBook = async (newBook) => {
   return protectedMutation("/api/books", newBook);
@@ -17,22 +17,21 @@ export const updateBook = async (
   updatedBook
 ) => {
   return protectedFetch(
-    `/api/books/${id}`,
-    "PATCH",
-    updatedBook
-  );
+  `/api/books/${id}`,
+  "PATCH",
+  updatedBook
+);
 };
 
 export const deleteBook = async (id) => {
   return protectedFetch(
     `/api/books/${id}`,
-    {},
     "DELETE"
   );
 };
 
 export const toggleBookStatus = async (id) => {
-  return protectedFetch(
+  return protectedMutation(
     `/api/books/toggle-status/${id}`,
     {},
     "PATCH"

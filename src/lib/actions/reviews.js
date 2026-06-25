@@ -1,10 +1,12 @@
 import {
+  protectedFetch,
+  protectedMutation,
   serverFetch,
   serverMutation,
 } from "../core/server";
 
 export const getUserReviews = async (email) => {
-  return serverFetch(
+  return protectedFetch(
     `/api/reviews/user/${email}`
   );
 };
@@ -16,14 +18,14 @@ export const getReviewsByBook = async ( bookId ) => {
 };
 
 export const addReview = async (data) => {
-  return serverMutation(
+  return protectedMutation(
     "/api/reviews",
     data
   );
 };
 
 export const updateReview = async ( id, data ) => {
-  return serverMutation(
+  return protectedMutation(
     `/api/reviews/${id}`,
     data,
     "PATCH"
@@ -31,7 +33,7 @@ export const updateReview = async ( id, data ) => {
 };
 
 export const deleteReview = async (id) => {
-  return serverMutation(
+  return protectedMutation(
     `/api/reviews/${id}`,
     {},
     "DELETE"

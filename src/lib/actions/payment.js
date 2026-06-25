@@ -1,7 +1,7 @@
-import { serverMutation } from "../core/server";
+import { protectedMutation, serverMutation } from "../core/server";
 
 export const createCheckoutSession = async (payload) => {
-    return serverMutation(
+    return protectedMutation(
       "/api/create-checkout-session",
       payload
     );
