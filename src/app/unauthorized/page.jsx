@@ -52,15 +52,9 @@ export default function UnauthorizedPage() {
             <FaLock className="text-2xl" />
           </div>
 
-          {/* Upper Eyebrow Text */}
-          <span className="text-blue-600 dark:text-blue-400 font-semibold uppercase tracking-wider text-xs">
-            401 Error
-          </span>
+          <h1 className="text-7xl font-bold text-red-600 uppercase mb-5">403</h1>
 
-          {/* Main Heading */}
-          <h2 className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">
-            Access Denied
-          </h2>
+          <h2 className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">Access Forbidden</h2>
 
           {/* Description Paragraph */}
           <p className="mt-4 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -99,6 +93,7 @@ export default function UnauthorizedPage() {
                 dark:hover:bg-slate-700/60
                 transition-colors
                 shadow-sm
+                cursor-pointer
               "
             >
               Go Back
@@ -141,3 +136,4 @@ export default function UnauthorizedPage() {
     </section>
   );
 }
+

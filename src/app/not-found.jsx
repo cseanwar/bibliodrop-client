@@ -53,8 +53,8 @@ export default function NotFoundPage() {
           </div>
 
           {/* Upper Eyebrow Text */}
-          <span className="text-blue-600 dark:text-blue-400 font-semibold uppercase tracking-wider text-xs">
-            404 Error
+          <span className="text-7xl font-bold text-red-600 uppercase mb-5">
+            404
           </span>
 
           {/* Main Heading */}
@@ -64,9 +64,9 @@ export default function NotFoundPage() {
 
           {/* Description Paragraph */}
           <p className="mt-4 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-            The page you are looking for doesn&apos;t exist or has been moved to a
-            different directory. Let&apos;s get you back on track to finding your
-            next book.
+            The page you are looking for doesn&apos;t exist or has been moved to
+            a different directory. Let&apos;s get you back on track to finding
+            your next book.
           </p>
 
           {/* Divider Decorative Border */}
@@ -99,6 +99,7 @@ export default function NotFoundPage() {
                 dark:hover:bg-slate-700/60
                 transition-colors
                 shadow-sm
+                cursor-pointer
               "
             >
               Go Back

@@ -74,7 +74,7 @@ export default function AdminDashboardPage() {
       <div className="bg-white dark:bg-slate-900 border rounded-2xl p-6">
         <h2 className="text-xl font-bold mb-6">Books by Category</h2>
 
-        <div className="h-[350px]">
+        <div className="h-87.5">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie

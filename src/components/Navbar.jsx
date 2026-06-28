@@ -149,6 +149,15 @@ object-contain
             </Link>
           </motion.div>
 
+          <motion.div variants={navItemVariants}>
+            <Link
+              href="/about-us"
+              className={navLinkClass(pathname.startsWith("/about-us"))}
+            >
+              About Us
+            </Link>
+          </motion.div>
+
           {session && session?.user && (
             <motion.div variants={navItemVariants}>
               <Link
@@ -191,9 +200,9 @@ object-contain
                 }}
                 onClick={() => setIsLoggedIn(true)}
               >
-                <Link 
-                href="/login"
-                className="
+                <Link
+                  href="/login"
+                  className="
 text-md
 font-semibold
 text-slate-700
@@ -202,7 +211,10 @@ hover:text-blue-600
 dark:hover:text-blue-400
 transition
 cursor-pointer
-"> Login
+"
+                >
+                  {" "}
+                  Login
                 </Link>
               </motion.button>
 
@@ -295,12 +307,11 @@ shadow-sm
                   >
                     {/* User Info */}
                     <div className="px-6 py-5 border-b border-slate-200 dark:border-slate-800">
-                      {/* <p className="text-xs uppercase tracking-wider font-semibold text-amber-500">
-                        {session.user.role} Account
-                      </p> */}
-
                       <p className="text-lg font-bold text-slate-900 dark:text-white mt-2">
-                        {session.user.name} <span className="uppercase text-xs text-amber-500">({session.user.role})</span>
+                        {session.user.name}{" "}
+                        <span className="uppercase text-xs text-amber-500">
+                          ({session.user.role})
+                        </span>
                       </p>
 
                       <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -450,6 +461,14 @@ shadow-sm
                   className={navLinkClass(pathname.startsWith("/books"))}
                 >
                   Browse Books
+                </Link>
+
+                <Link
+                  href="/about-us"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={navLinkClass(pathname.startsWith("/about-us"))}
+                >
+                  About Us
                 </Link>
 
                 {isLoggedIn && (
