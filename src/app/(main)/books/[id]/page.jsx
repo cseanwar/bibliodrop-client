@@ -149,7 +149,7 @@ export default function BookDetailsPage() {
     );
   }
 
-  const isOwner = session?.user?.email === book.librarianEmail;
+  const isOwner = session?.user?.role === book.librarianEmail;
   const isCheckedOut = book.availability === "Checked Out";
   const disableRequest = isOwner || isCheckedOut;
 
