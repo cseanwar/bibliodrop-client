@@ -278,15 +278,9 @@ export default function BookDetailsPage() {
               </p>
             </div>
 
-            {isOwner && (
+            {isOwner && isLibrarian && (
               <p className="mb-3 text-sm text-amber-600">
-                Owner cannot request for his own book
-              </p>
-            )}
-
-            {isLibrarian && (
-              <p className="mb-3 text-sm text-amber-600">
-                Librarian cannot request for delivery.
+                Librarian or the Owner of the book cannot request for delivery.
               </p>
             )}
 
