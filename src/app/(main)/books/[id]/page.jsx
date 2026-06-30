@@ -149,7 +149,8 @@ export default function BookDetailsPage() {
     );
   }
 
-  const isOwner = session?.user?.role === book.librarianEmail;
+  const isOwner = session?.user?.email === book.librarianEmail;
+  const isLibrarian = session?.user?.role === "Librarian";
   const isCheckedOut = book.availability === "Checked Out";
   const disableRequest = isOwner || isCheckedOut;
 
@@ -277,9 +278,9 @@ export default function BookDetailsPage() {
               </p>
             </div>
 
-            {isOwner && (
+            {isOwner && isLibrarian && (
               <p className="mb-3 text-sm text-amber-600">
-                You cannot request your own book.
+                Librarian or the owner of the book cannot request for delivery.
               </p>
             )}
 
