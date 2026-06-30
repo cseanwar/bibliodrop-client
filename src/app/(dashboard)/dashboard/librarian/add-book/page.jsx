@@ -176,6 +176,7 @@ export default function AddBookPage() {
                       <option value="Biography">Biography</option>
                       <option value="Children">Children</option>
                       <option value="Business">Business</option>
+                      <option value="Technology">Technology</option>
                       <option value="Mystery">Mystery</option>
                       <option value="Romance">Romance</option>
                       <option value="Health">Health</option>
