@@ -46,7 +46,7 @@ export default function BrowseBooksPage() {
     "Academic",
     "History",
     "Children",
-    "Science",
+    "Mystery",
     "Biography",
     "Technology",
     "Business",
