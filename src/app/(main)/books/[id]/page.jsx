@@ -152,7 +152,7 @@ export default function BookDetailsPage() {
   const isOwner = session?.user?.email === book.librarianEmail;
   const isLibrarian = session?.user?.role === "librarian";
   const isCheckedOut = book.availability === "Checked Out";
-  const disableRequest = isOwner || isCheckedOut;
+  const disableRequest = isOwner || isCheckedOut || isLibrarian;
 
   const handleRequestDelivery = async () => {
     if (!session) {
