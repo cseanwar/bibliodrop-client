@@ -1,4 +1,4 @@
-import { protectedMutation, serverMutation } from "../core/server";
+import { protectedMutation } from "../core/server";
 
 export const createCheckoutSession = async (payload) => {
     return protectedMutation(
