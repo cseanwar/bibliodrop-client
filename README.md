@@ -6,7 +6,7 @@
 
 A comprehensive digital platform connecting avid readers and students with local libraries and independent book owners — enabling doorstep book delivery, verified reviews, and a full role-based management ecosystem.
 
-[![Live Site](https://img.shields.io/badge/Live%20Site-bibliodrop.vercel.app-1B2A4A?style=for-the-badge&logo=vercel&logoColor=white)](https://bibliodrop.vercel.app)
+[![Live Site](https://img.shields.io/badge/Live%20Site-bibliodrop-client-two.vercel.app-1B2A4A?style=for-the-badge&logo=vercel&logoColor=white)](https://bibliodrop-client-two.vercel.app)
 [![Server](https://img.shields.io/badge/API%20Server-bibliodrop--api.onrender.com-C9A84C?style=for-the-badge&logo=render&logoColor=white)](https://bibliodrop-api.onrender.com)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
@@ -20,8 +20,8 @@ A comprehensive digital platform connecting avid readers and students with local
 
 | Service | URL |
 |---|---|
-| 🖥️ Frontend | [https://bibliodrop.vercel.app](https://bibliodrop.vercel.app) |
-| ⚙️ Backend API | [https://bibliodrop-api.onrender.com](https://bibliodrop-api.onrender.com) |
+| 🖥️ Frontend | [https://bibliodrop-client-two.vercel.app](https://bibliodrop-client-two.vercel.app) |
+| ⚙️ Backend API | [https://bibliodrop-server-ten.vercel.app](https://bibliodrop-server-ten.vercel.app) |
 
 > **Note:** Replace the above URLs with your actual deployed links before submitting.
 
@@ -190,15 +190,15 @@ bibliodrop/
 - Node.js v18+
 - MongoDB Atlas cluster (free tier works)
 - Stripe account (test mode keys)
-- imgBB account (free API key at [imgbb.com](https://imgbb.com))
+- imgBB account (free API key at [imgbb.com](https://anwar-hossain3.imgbb.com/))
 - Google Cloud project with OAuth 2.0 credentials
 
 ### Installation
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/bibliodrop.git
-cd bibliodrop
+git clone https://github.com/cseanwar/bibliodrop-client.git
+cd bibliodrop-client
 
 # Install dependencies
 npm install
@@ -206,7 +206,7 @@ npm install
 
 ### Environment Variables
 
-Create a `.env.local` file in the project root:
+Create a `.env` file in the project root:
 
 ```env
 # MongoDB
