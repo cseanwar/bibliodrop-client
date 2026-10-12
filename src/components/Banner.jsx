@@ -72,11 +72,11 @@ export default function Banner() {
         }}
         navigation
         loop={true}
-        className="h-[48vh] min-h-[380px] max-h-[500px]"
+        className="h-[70vh] min-h-[50vh] max-h-[75vh]"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="relative h-[48vh] min-h-[380px] max-h-[500px] overflow-hidden">
+            <div className="relative h-[70vh] min-h-[50vh] max-h-[75vh] overflow-hidden">
               {/* Background Image */}
               <motion.div
                 initial={{ scale: 1.15 }}
@@ -98,9 +98,8 @@ export default function Banner() {
 
               {/* Theme Aware Overlay */}
               <div
-                className={`absolute inset-0 ${
-                  theme === "dark" ? "bg-black/75" : "bg-slate-900/60"
-                }`}
+                className={`absolute inset-0 ${theme === "dark" ? "bg-black/75" : "bg-slate-900/60"
+                  }`}
               />
 
               {/* Content */}

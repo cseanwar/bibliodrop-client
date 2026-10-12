@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 import { getAllUsers, updateUserRole, deleteUser } from "@/lib/actions/users";
 import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import ActionIconButton from "@/components/shared/ActionIconButton";
+import { FaTrash } from "react-icons/fa";
 
 export default function ManageUsersPage() {
   const [users, setUsers] = useState([]);
@@ -125,12 +127,11 @@ export default function ManageUsersPage() {
                     <span
                       className={`
                         inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold tracking-wide uppercase
-                        ${
-                          user.role === "admin"
-                            ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                            : user.role === "librarian"
-                              ? "bg-sky-500/10 text-sky-400 border border-sky-500/20"
-                              : "bg-slate-500/10 text-slate-400 border border-slate-500/20"
+                        ${user.role === "admin"
+                          ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                          : user.role === "librarian"
+                            ? "bg-sky-500/10 text-sky-400 border border-sky-500/20"
+                            : "bg-slate-500/10 text-slate-400 border border-slate-500/20"
                         }
                       `}
                     >
@@ -168,12 +169,18 @@ export default function ManageUsersPage() {
                       )}
 
                       {user.role !== "admin" && (
-                        <button
+                        <ActionIconButton
+                          icon={FaTrash}
+                          name="Delete"
                           onClick={() => handleDelete(user._id)}
-                          className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-xs"
-                        >
-                          Delete
-                        </button>
+                          variant="danger"
+                        />
+                        // <button
+                        //   onClick={() => handleDelete(user._id)}
+                        //   className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-xs"
+                        // >
+                        //   Delete
+                        // </button>
                       )}
                     </div>
                   </td>
