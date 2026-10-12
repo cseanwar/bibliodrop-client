@@ -72,11 +72,11 @@ export default function Banner() {
         }}
         navigation
         loop={true}
-        className="h-[85vh]"
+        className="h-[48vh] min-h-[380px] max-h-[500px]"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="relative h-[85vh] overflow-hidden">
+            <div className="relative h-[48vh] min-h-[380px] max-h-[500px] overflow-hidden">
               {/* Background Image */}
               <motion.div
                 initial={{ scale: 1.15 }}
@@ -116,7 +116,7 @@ export default function Banner() {
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 w-72 h-72 bg-blue-500 rounded-full blur-[120px]"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-64 h-64 bg-blue-500 rounded-full blur-[100px]"
                 />
 
                 <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
@@ -132,16 +132,16 @@ export default function Banner() {
                       variants={fadeUp}
                       className="
                       inline-block
-                      mb-4
-                      px-4
-                      py-2
+                      mb-3
+                      px-3.5
+                      py-1
                       rounded-full
                       bg-blue-600/20
                       border
                       border-blue-400/30
                       text-blue-100
                       backdrop-blur-md
-                      text-sm
+                      text-xs
                       font-medium
                     "
                     >
@@ -152,12 +152,13 @@ export default function Banner() {
                     <motion.h1
                       variants={fadeUp}
                       className="
-                      text-4xl
-                      md:text-6xl
+                      text-3xl
+                      sm:text-4xl
+                      md:text-5xl
                       font-bold
                       text-white
                       leading-tight
-                      mb-6
+                      mb-3
                     "
                     >
                       {slide.title}
@@ -167,11 +168,13 @@ export default function Banner() {
                     <motion.p
                       variants={fadeUp}
                       className="
-                      text-lg
-                      md:text-xl
+                      text-sm
+                      sm:text-base
+                      md:text-lg
                       text-slate-200
-                      mb-8
+                      mb-5
                       leading-relaxed
+                      max-w-2xl
                     "
                     >
                       {slide.description}
@@ -180,7 +183,7 @@ export default function Banner() {
                     {/* Buttons */}
                     <motion.div
                       variants={fadeUp}
-                      className="flex flex-col sm:flex-row gap-4"
+                      className="flex flex-col sm:flex-row gap-3"
                     >
                       <motion.div
                         whileHover={{ scale: 1.05 }}
@@ -195,10 +198,11 @@ export default function Banner() {
                           bg-blue-600
                           hover:bg-blue-700
                           text-white
-                          px-8
-                          py-4
+                          px-6
+                          py-2.5
                           rounded-xl
                           font-semibold
+                          text-sm
                           shadow-lg
                           shadow-blue-500/20
                           transition
@@ -213,7 +217,7 @@ export default function Banner() {
                         whileTap={{ scale: 0.95 }}
                       >
                         <Link
-                          href="/about"
+                          href="/about-us"
                           className="
                           inline-flex
                           items-center
@@ -224,10 +228,11 @@ export default function Banner() {
                           border-white/20
                           hover:bg-white/20
                           text-white
-                          px-8
-                          py-4
+                          px-6
+                          py-2.5
                           rounded-xl
                           font-semibold
+                          text-sm
                           transition
                         "
                         >
@@ -240,11 +245,11 @@ export default function Banner() {
                     <motion.div
                       variants={staggerContainer}
                       className="
-                      mt-12
-                      grid
+                      mt-5
+                      hidden sm:grid
                       grid-cols-3
-                      gap-8
-                      max-w-lg
+                      gap-4
+                      max-w-md
                     "
                     >
                       {[
@@ -256,23 +261,23 @@ export default function Banner() {
                           key={idx}
                           variants={fadeUp}
                           whileHover={{
-                            y: -6,
-                            scale: 1.03,
+                            y: -3,
+                            scale: 1.02,
                           }}
                           className="
                           bg-white/5
                           backdrop-blur-sm
                           rounded-xl
-                          p-4
+                          p-2.5
                           border
                           border-white/10
                         "
                         >
-                          <h3 className="text-3xl font-bold text-white">
+                          <h3 className="text-xl font-bold text-white">
                             {item[0]}
                           </h3>
 
-                          <p className="text-slate-300 text-sm">{item[1]}</p>
+                          <p className="text-slate-300 text-xs">{item[1]}</p>
                         </motion.div>
                       ))}
                     </motion.div>

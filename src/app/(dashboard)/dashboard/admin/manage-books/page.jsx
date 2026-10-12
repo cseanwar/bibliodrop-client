@@ -11,6 +11,8 @@ import {
 } from "@/lib/actions/admin";
 import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { FaEye, FaEyeSlash, FaTrash } from "react-icons/fa";
+import ActionIconButton from "@/components/shared/ActionIconButton";
 
 export default function ManageBooksPage() {
   const [books, setBooks] = useState([]);
@@ -147,21 +149,20 @@ export default function ManageBooksPage() {
                   </td>
 
                   <td className="px-6 py-4">
-                    <div className="flex justify-center gap-2">
-                      <button
+                    <div className="flex justify-center items-center gap-2">
+                      <ActionIconButton
+                        icon={book.status === "Published" ? FaEyeSlash : FaEye}
+                        name={book.status === "Published" ? "Unpublish" : "Publish"}
                         onClick={() => handleToggle(book._id)}
-                        className="bg-blue-600 text-white px-4 py-2 rounded-lg"
-                      >
-                        {book.status === "Published" ? "Unpublish" : "Publish"}
-                      </button>
+                        variant={book.status === "Published" ? "warning" : "success"}
+                      />
 
-                      <button
-                        type="button"
+                      <ActionIconButton
+                        icon={FaTrash}
+                        name="Delete"
                         onClick={() => handleDelete(book._id)}
-                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl"
-                      >
-                        Delete
-                      </button>
+                        variant="danger"
+                      />
                     </div>
                   </td>
                 </tr>

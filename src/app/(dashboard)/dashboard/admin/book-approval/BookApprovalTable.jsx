@@ -10,6 +10,8 @@ import {
 import Image from "next/image";
 import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { FaCheck, FaTrash } from "react-icons/fa";
+import ActionIconButton from "@/components/shared/ActionIconButton";
 
 export default function BookApprovalTable() {
   const [books, setBooks] = useState([]);
@@ -160,39 +162,20 @@ export default function BookApprovalTable() {
 
                   {/* Actions */}
                   <td className="px-6 py-4">
-                    <div className="flex justify-center gap-3">
-                      <button
-                        style={{
-                          backgroundColor: "green",
-                          color: "white",
-                          padding: "10px 16px",
-                          borderRadius: "8px",
-                          cursor: "pointer",
-                        }}
+                    <div className="flex justify-center items-center gap-2">
+                      <ActionIconButton
+                        icon={FaCheck}
+                        name="Approve & Publish"
                         onClick={() => handleApprove(book._id)}
-                      >
-                        Approve
-                      </button>
+                        variant="success"
+                      />
 
-                      <button
-                        type="button"
+                      <ActionIconButton
+                        icon={FaTrash}
+                        name="Delete"
                         onClick={() => handleDelete(book._id)}
-                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl"
-                      >
-                        Delete
-                      </button>
-                      {/* <button
-                        style={{
-                          backgroundColor: "red",
-                          color: "white",
-                          padding: "10px 16px",
-                          borderRadius: "8px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => handleDelete(book._id)}
-                      >
-                        Delete
-                      </button> */}
+                        variant="danger"
+                      />
                     </div>
                   </td>
                 </tr>

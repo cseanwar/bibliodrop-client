@@ -24,6 +24,7 @@ import CardSkeleton from "@/components/CardSkeleton";
 import BookCard from "@/components/BookCard";
 import EditModal from "@/components/EditModal";
 import DeleteConfirmModal from "@/components/DeleteConfirmationModal";
+import ActionIconButton from "@/components/shared/ActionIconButton";
 import { addToWishlist } from "@/lib/actions/wishlists";
 
 export default function BookDetailsPage() {
@@ -362,31 +363,35 @@ export default function BookDetailsPage() {
               <p className="text-xs text-slate-500">
                 Manage your book listing directly:
               </p>
-              <div className="flex flex-col gap-2.5 pt-1">
-                <button
+              <div className="flex items-center justify-center gap-3 pt-2">
+                <ActionIconButton
+                  icon={FaEdit}
+                  name="Edit Details"
                   onClick={() => setIsEditOpen(true)}
-                  className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition cursor-pointer"
-                >
-                  <FaEdit /> Edit Details
-                </button>
-                <button
+                  variant="primary"
+                  size={19}
+                />
+
+                <ActionIconButton
+                  icon={book.status === "Published" ? FaEyeSlash : FaEye}
+                  name={
+                    book.status === "Published"
+                      ? "Unpublish Book"
+                      : "Publish Book"
+                  }
                   onClick={handleTogglePublish}
                   disabled={toggleLoading}
-                  className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-medium text-sm transition disabled:opacity-50 cursor-pointer"
-                >
-                  {book.status === "Published" ? <FaEyeSlash /> : <FaEye />}
-                  {toggleLoading
-                    ? "Updating..."
-                    : book.status === "Published"
-                    ? "Unpublish Book"
-                    : "Publish Book"}
-                </button>
-                <button
+                  variant={book.status === "Published" ? "warning" : "success"}
+                  size={19}
+                />
+
+                <ActionIconButton
+                  icon={FaTrash}
+                  name="Delete Book"
                   onClick={() => setShowDeleteModal(true)}
-                  className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-medium text-sm transition cursor-pointer"
-                >
-                  <FaTrash /> Delete Book
-                </button>
+                  variant="danger"
+                  size={19}
+                />
               </div>
             </div>
           )}

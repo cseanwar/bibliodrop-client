@@ -13,6 +13,8 @@ import {
 import EditModal from "@/components/EditModal";
 import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { FaEdit, FaEye, FaEyeSlash, FaTrash } from "react-icons/fa";
+import ActionIconButton from "@/components/shared/ActionIconButton";
 
 export default function ManageInventoryPage() {
   const { data: session } = useSession();
@@ -172,38 +174,29 @@ export default function ManageInventoryPage() {
             </p>
 
             {/* Actions */}
-            <div className="flex justify-center gap-2">
-              <button
-                type="button"
+            <div className="flex justify-center items-center gap-2">
+              <ActionIconButton
+                icon={FaEdit}
+                name="Edit"
                 onClick={() => handleEdit(book)}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-xl"
-              >
-                Edit
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleDelete(book._id)}
-                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl"
-              >
-                Delete
-              </button>
+                variant="primary"
+              />
 
               {book.status !== "Pending Approval" && (
-                <button
-                  type="button"
+                <ActionIconButton
+                  icon={book.status === "Published" ? FaEyeSlash : FaEye}
+                  name={book.status === "Published" ? "Unpublish" : "Publish"}
                   onClick={() => handleToggle(book._id)}
-                  className={`px-4 py-2 rounded-xl text-white
-        ${
-          book.status === "Published"
-            ? "bg-orange-500 hover:bg-orange-600"
-            : "bg-green-500 hover:bg-green-600"
-        }
-      `}
-                >
-                  {book.status === "Published" ? "Unpublish" : "Publish"}
-                </button>
+                  variant={book.status === "Published" ? "warning" : "success"}
+                />
               )}
+
+              <ActionIconButton
+                icon={FaTrash}
+                name="Delete"
+                onClick={() => handleDelete(book._id)}
+                variant="danger"
+              />
             </div>
           </div>
         ))}
