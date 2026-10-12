@@ -8,6 +8,8 @@ import { getUserReviews, deleteReview } from "@/lib/actions/reviews";
 import EditReviewModal from "@/components/EditReviewModal";
 import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import ActionIconButton from "@/components/shared/ActionIconButton";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 export default function MyReviewsPage() {
   const { data: session } = useSession();
@@ -94,24 +96,22 @@ export default function MyReviewsPage() {
               <p className="mt-3">{review.comment}</p>
 
               <div className="flex gap-3 mt-4">
-                <button
+                <ActionIconButton
+                  icon={FaEdit}
+                  name="Edit"
                   onClick={() => {
                     setSelectedReview(review);
-
                     setIsModalOpen(true);
                   }}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg"
-                >
-                  Edit
-                </button>
+                  variant="primary"
+                />
 
-                <button
-                  type="button"
+                <ActionIconButton
+                  icon={FaTrash}
+                  name="Delete"
                   onClick={() => handleDelete(review._id)}
-                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl"
-                >
-                  Delete
-                </button>
+                  variant="danger"
+                />
               </div>
             </div>
           ))}

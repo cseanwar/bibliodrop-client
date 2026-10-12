@@ -70,7 +70,7 @@ export default function UserDashboardPage() {
 
         <StatCard
           title="Total Spent"
-          value={`$${stats.totalSpent}`}
+          value={`$${stats.totalSpent.toFixed(2)}`}
           icon={<FaDollarSign />}
         />
       </div>
