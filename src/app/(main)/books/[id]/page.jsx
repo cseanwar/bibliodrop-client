@@ -105,9 +105,9 @@ export default function BookDetailsPage() {
   const averageRating =
     reviews.length > 0
       ? (
-          reviews.reduce((sum, review) => sum + review.rating, 0) /
-          reviews.length
-        ).toFixed(1)
+        reviews.reduce((sum, review) => sum + review.rating, 0) /
+        reviews.length
+      ).toFixed(1)
       : 0;
 
   if (loading) {
@@ -148,6 +148,11 @@ export default function BookDetailsPage() {
   };
 
   const handleWishlist = async () => {
+    if (!session) {
+      toast.error("Please login first");
+      return;
+    }
+
     try {
       await addToWishlist(book._id, session.user.email);
 
@@ -275,9 +280,8 @@ export default function BookDetailsPage() {
               <div className="rounded-xl border p-4">
                 <p className="text-sm text-slate-500">Status</p>
                 <p
-                  className={`font-semibold ${
-                    isCheckedOut ? "text-red-600" : "text-green-600"
-                  }`}
+                  className={`font-semibold ${isCheckedOut ? "text-red-600" : "text-green-600"
+                    }`}
                 >
                   {isCheckedOut ? "Checked Out" : "Available"}
                 </p>
@@ -344,10 +348,9 @@ export default function BookDetailsPage() {
               disabled={disableRequest}
               onClick={handleRequestDelivery}
               className={`w-full py-3 cursor-pointer rounded-xl font-semibold transition
-                ${
-                  disableRequest
-                    ? "bg-slate-400 cursor-not-allowed text-white"
-                    : "bg-blue-600 hover:bg-blue-700 text-white"
+                ${disableRequest
+                  ? "bg-slate-400 cursor-not-allowed text-white"
+                  : "bg-blue-600 hover:bg-blue-700 text-white"
                 }`}
             >
               Request Delivery
