@@ -1,9 +1,5 @@
-import { serverFetch } from "../core/server";
+import { protectedFetch } from "../core/server";
 
-export const getLibrarianStats = async (
-  email
-) => {
-  return serverFetch(
-    `/api/librarian/stats/${email}`
-  );
+export const getLibrarianStats = async (email) => {
+  return protectedFetch(`/api/librarian/stats/${email}`);
 };

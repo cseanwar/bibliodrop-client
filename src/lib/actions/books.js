@@ -42,12 +42,24 @@ export const getAllBooks = async ({
   search = "",
   category = "",
   sort = "",
+  availability = "",
+  minFee = "",
+  maxFee = "",
   page = 1,
   perPage = 8,
 }) => {
-  return serverFetch(
-    `/api/books?page=${page}&perPage=${perPage}&search=${search}&category=${category}&sort=${sort}`
-  );
+  const queryParams = new URLSearchParams({
+    page: String(page),
+    perPage: String(perPage),
+    ...(search ? { search } : {}),
+    ...(category ? { category } : {}),
+    ...(sort ? { sort } : {}),
+    ...(availability ? { availability } : {}),
+    ...(minFee ? { minFee: String(minFee) } : {}),
+    ...(maxFee ? { maxFee: String(maxFee) } : {}),
+  });
+
+  return serverFetch(`/api/books?${queryParams.toString()}`);
 };
 
 export const getBookDetails = async (id) => {

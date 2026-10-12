@@ -5,8 +5,15 @@ import {
 } from "../core/server";
 
 export const getLibrarianDeliveries = async (email) => {
-  return serverFetch(
+  return protectedFetch(
     `/api/deliveries/librarian/${email}`
+  );
+};
+
+export const createDeliveryRequest = async (requestData) => {
+  return protectedMutation(
+    `/api/delivery-request`,
+    requestData
   );
 };
 

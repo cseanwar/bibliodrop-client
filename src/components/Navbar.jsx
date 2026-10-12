@@ -24,7 +24,6 @@ export default function Navbar() {
   const { resolvedTheme } = useTheme();
   const pathname = usePathname();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -191,14 +190,13 @@ object-contain
           <ThemeToggle />
           {!session ? (
             <>
-              <motion.button
+              <motion.div
                 whileHover={{
                   scale: 1.05,
                 }}
                 whileTap={{
                   scale: 0.95,
                 }}
-                onClick={() => setIsLoggedIn(true)}
               >
                 <Link
                   href="/login"
@@ -216,7 +214,7 @@ cursor-pointer
                   {" "}
                   Login
                 </Link>
-              </motion.button>
+              </motion.div>
 
               <motion.div
                 whileHover={{
@@ -471,9 +469,9 @@ shadow-sm
                   About Us
                 </Link>
 
-                {isLoggedIn && (
+                {session?.user && (
                   <Link
-                    href="/dashboard"
+                    href={`/dashboard/${session?.user?.role || "user"}`}
                     onClick={() => setMobileMenuOpen(false)}
                     className={navLinkClass(pathname.startsWith("/dashboard"))}
                   >
@@ -482,48 +480,70 @@ shadow-sm
                 )}
 
                 {/* User Section pinned to bottom */}
-                <div className="mt-auto border-t border-slate-200 dark:border-slate-800 pt-5">
-                  <p className="text-sm font-semibold text-slate-900 dark:text-white">
-                    {mockUser.name}
-                  </p>
+                {session?.user ? (
+                  <div className="mt-auto border-t border-slate-200 dark:border-slate-800 pt-5">
+                    <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                      {session?.user?.name || "User"}
+                    </p>
 
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-                    {mockUser.email}
-                  </p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                      {session?.user?.email}
+                    </p>
 
-                  <div className="flex flex-col gap-4">
-                    <Link
-                      href="/profile"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="
-                        flex
-                        items-center
-                        gap-3
-                        text-slate-700
-                        dark:text-slate-300
-                        hover:text-blue-600
-                        transition
-                      "
-                    >
-                      <FaUser />
-                      Profile Settings
-                    </Link>
+                    <div className="flex flex-col gap-4">
+                      <Link
+                        href={`/dashboard/${session?.user?.role || "user"}`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="
+                          flex
+                          items-center
+                          gap-3
+                          text-slate-700
+                          dark:text-slate-300
+                          hover:text-blue-600
+                          transition
+                        "
+                      >
+                        <FaThLarge />
+                        Dashboard
+                      </Link>
 
-                    <button
-                      onClick={handleLogout}
-                      className="
-                        flex
-                        items-center
-                        gap-3
-                        text-red-500
-                        font-medium
-                      "
-                    >
-                      <FaSignOutAlt />
-                      Logout
-                    </button>
+                      <button
+                        onClick={async () => {
+                          setMobileMenuOpen(false);
+                          await handleLogout();
+                        }}
+                        className="
+                          flex
+                          items-center
+                          gap-3
+                          text-red-500
+                          font-medium
+                        "
+                      >
+                        <FaSignOutAlt />
+                        Logout
+                      </button>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="mt-auto border-t border-slate-200 dark:border-slate-800 pt-5 flex flex-col gap-3">
+                    <Link
+                      href="/login"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="w-full text-center py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      href="/register"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="w-full text-center py-2.5 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+                    >
+                      Sign Up
+                    </Link>
+                  </div>
+                )}
               </div>
             </motion.div>
           </div>

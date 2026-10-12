@@ -7,6 +7,8 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import { BiArrowBack } from "react-icons/bi";
 
+import { createDeliveryRequest } from "@/lib/actions/deliveries";
+
 export default function PaymentSuccessContent() {
   const { data: session } = useSession();
 
@@ -18,26 +20,11 @@ export default function PaymentSuccessContent() {
 
   const updateDeliveryRequest = async () => {
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/delivery-request`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            bookId,
-            userEmail: session.user.email,
-            userName: session.user.name,
-          }),
-        },
-      );
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message);
-      }
+      await createDeliveryRequest({
+        bookId,
+        userEmail: session.user.email,
+        userName: session.user.name,
+      });
 
       toast.success("Delivery request created");
     } catch (error) {

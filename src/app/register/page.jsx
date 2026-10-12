@@ -66,11 +66,7 @@ export default function RegisterPage() {
 
       toast.success("Welcome to BiblioDrop!");
 
-      if (data.role === "librarian") {
-        router.replace("/dashboard/librarian");
-      } else {
-        router.replace("/dashboard/user");
-      }
+      router.replace("/");
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong");

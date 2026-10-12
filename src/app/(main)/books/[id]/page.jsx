@@ -2,12 +2,17 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
 import toast from "react-hot-toast";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaEdit, FaTrash, FaEye, FaEyeSlash } from "react-icons/fa";
 
-import { getBookById, getRelatedBooks } from "@/lib/actions/books";
+import {
+  getBookById,
+  getRelatedBooks,
+  deleteBook,
+  toggleBookStatus,
+} from "@/lib/actions/books";
 import {
   getReviewsByBook,
   canReviewBook,
@@ -17,10 +22,13 @@ import { createCheckoutSession } from "@/lib/actions/payment";
 
 import CardSkeleton from "@/components/CardSkeleton";
 import BookCard from "@/components/BookCard";
+import EditModal from "@/components/EditModal";
+import DeleteConfirmModal from "@/components/DeleteConfirmationModal";
 import { addToWishlist } from "@/lib/actions/wishlists";
 
 export default function BookDetailsPage() {
   const { id } = useParams();
+  const router = useRouter();
 
   const { data: session } = useSession();
 
@@ -34,6 +42,11 @@ export default function BookDetailsPage() {
   const [comment, setComment] = useState("");
 
   const [relatedBooks, setRelatedBooks] = useState([]);
+
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [toggleLoading, setToggleLoading] = useState(false);
 
   useEffect(() => {
     if (id && session?.user?.email) {
@@ -154,6 +167,33 @@ export default function BookDetailsPage() {
   const isCheckedOut = book.availability === "Checked Out";
   const disableRequest = isOwner || isLibrarian || isCheckedOut;
 
+  const handleTogglePublish = async () => {
+    try {
+      setToggleLoading(true);
+      await toggleBookStatus(book._id);
+      toast.success("Book status updated");
+      await loadBook();
+    } catch {
+      toast.error("Cannot publish pending book");
+    } finally {
+      setToggleLoading(false);
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      setDeleteLoading(true);
+      await deleteBook(book._id);
+      toast.success("Book deleted successfully");
+      router.push("/books");
+    } catch {
+      toast.error("Failed to delete book");
+    } finally {
+      setDeleteLoading(false);
+      setShowDeleteModal(false);
+    }
+  };
+
   const handleRequestDelivery = async () => {
     if (!session) {
       toast.error("Please login first");
@@ -209,13 +249,16 @@ export default function BookDetailsPage() {
             </div>
 
             {/* Rating */}
-
             <div className="flex items-center gap-3">
-              <span className="text-yellow-500 text-lg">⭐⭐⭐⭐⭐</span>
+              <span className="text-yellow-500 text-lg">
+                {"⭐".repeat(Math.max(1, Math.min(5, Math.round(Number(averageRating) || 5))))}
+              </span>
 
-              <span className="font-semibold">4.8</span>
+              <span className="font-semibold">{averageRating > 0 ? averageRating : "New"}</span>
 
-              <span className="text-slate-500">(24 Reviews)</span>
+              <span className="text-slate-500">
+                ({reviews.length} {reviews.length === 1 ? "Review" : "Reviews"})
+              </span>
             </div>
 
             {/* Meta */}
@@ -278,9 +321,15 @@ export default function BookDetailsPage() {
               </p>
             </div>
 
-            {isOwner && isLibrarian && (
+            {isOwner && (
               <p className="mb-3 text-sm text-amber-600">
-                Librarian or the Owner of the book cannot request for delivery.
+                You are the owner of this book listing.
+              </p>
+            )}
+
+            {!isOwner && isLibrarian && (
+              <p className="mb-3 text-sm text-amber-600">
+                Librarians cannot request books for delivery.
               </p>
             )}
 
@@ -304,6 +353,44 @@ export default function BookDetailsPage() {
             </button>
           </div>
 
+          {/* Librarian Owner Controls */}
+          {isOwner && (
+            <div className="rounded-2xl border p-5 bg-amber-50/70 dark:bg-amber-950/20 border-amber-300 dark:border-amber-800 mb-8 space-y-3">
+              <h3 className="font-bold text-amber-900 dark:text-amber-200">
+                Librarian Controls
+              </h3>
+              <p className="text-xs text-slate-500">
+                Manage your book listing directly:
+              </p>
+              <div className="flex flex-col gap-2.5 pt-1">
+                <button
+                  onClick={() => setIsEditOpen(true)}
+                  className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition cursor-pointer"
+                >
+                  <FaEdit /> Edit Details
+                </button>
+                <button
+                  onClick={handleTogglePublish}
+                  disabled={toggleLoading}
+                  className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-medium text-sm transition disabled:opacity-50 cursor-pointer"
+                >
+                  {book.status === "Published" ? <FaEyeSlash /> : <FaEye />}
+                  {toggleLoading
+                    ? "Updating..."
+                    : book.status === "Published"
+                    ? "Unpublish Book"
+                    : "Publish Book"}
+                </button>
+                <button
+                  onClick={() => setShowDeleteModal(true)}
+                  className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-medium text-sm transition cursor-pointer"
+                >
+                  <FaTrash /> Delete Book
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Librarian Card */}
           <div className="rounded-2xl border p-5 bg-slate-50 dark:bg-slate-900 mb-8">
             <h3 className="font-semibold mb-2">Listed By</h3>
@@ -322,14 +409,17 @@ export default function BookDetailsPage() {
               </div>
             </div>
           </div>
+
           {/* User wishlist card */}
-          <button
-            onClick={handleWishlist}
-            className="flex items-center gap-2 px-4 py-3 rounded-xl bg-pink-600 text-white cursor-pointer hover:bg-pink-700"
-          >
-            <FaHeart />
-            Add to Wishlist
-          </button>
+          {!isOwner && session?.user?.role !== "librarian" && (
+            <button
+              onClick={handleWishlist}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-pink-600 text-white cursor-pointer hover:bg-pink-700 transition font-medium"
+            >
+              <FaHeart />
+              Add to Wishlist
+            </button>
+          )}
         </div>
       </div>
 
@@ -427,6 +517,23 @@ export default function BookDetailsPage() {
           </div>
         )}
       </section>
+
+      {/* Edit Modal for Librarian Owner */}
+      <EditModal
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+        book={book}
+        refetch={loadBook}
+      />
+
+      {/* Delete Confirmation Modal for Librarian Owner */}
+      <DeleteConfirmModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete Book Listing"
+        message="Are you sure you want to delete this book listing? This action cannot be undone."
+      />
     </div>
   );
 }
