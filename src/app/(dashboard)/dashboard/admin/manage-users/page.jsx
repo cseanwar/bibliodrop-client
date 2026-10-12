@@ -146,7 +146,7 @@ export default function ManageUsersPage() {
                         <button
                           disabled={updatingRoleId === user._id}
                           onClick={() => handleRoleChange(user._id, "admin")}
-                          className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 disabled:opacity-50 px-3 py-1.5 rounded-lg text-xs"
+                          className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 disabled:opacity-50 px-3 py-2 rounded-lg text-xs"
                         >
                           {updatingRoleId === user._id
                             ? "Updating..."
@@ -160,7 +160,7 @@ export default function ManageUsersPage() {
                           onClick={() =>
                             handleRoleChange(user._id, "librarian")
                           }
-                          className="bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-500/30 disabled:opacity-50 px-3 py-1.5 rounded-lg text-xs"
+                          className="bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-500/30 disabled:opacity-50 px-3 py-2 rounded-lg text-xs"
                         >
                           {updatingRoleId === user._id
                             ? "Updating..."
@@ -175,12 +175,6 @@ export default function ManageUsersPage() {
                           onClick={() => handleDelete(user._id)}
                           variant="danger"
                         />
-                        // <button
-                        //   onClick={() => handleDelete(user._id)}
-                        //   className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-xs"
-                        // >
-                        //   Delete
-                        // </button>
                       )}
                     </div>
                   </td>
