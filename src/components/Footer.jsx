@@ -17,7 +17,7 @@ const footerLinks = [
   {
     title: "Quick Links",
     links: [
-      { name: "About Us", href: "/about" },
+      { name: "About Us", href: "/about-us" },
       { name: "Contact", href: "/contact" },
       { name: "Privacy Policy", href: "/privacy-policy" },
     ],
@@ -197,7 +197,7 @@ export default function Footer() {
                     transition
                   "
                 >
-                  <Icon className="text-2xl text-blue-600 dark:text-blue-400"/>
+                  <Icon className="text-2xl text-blue-600 dark:text-blue-400" />
                 </motion.a>
               ))}
             </div>
