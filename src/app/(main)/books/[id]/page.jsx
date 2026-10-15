@@ -203,7 +203,8 @@ export default function BookDetailsPage() {
 
   const handleRequestDelivery = async () => {
     if (!session) {
-      toast.error("Please login first");
+      redirect('/login')
+      // toast.error("Please login first");
       return;
     }
     try {
