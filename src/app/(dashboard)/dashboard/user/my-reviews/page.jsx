@@ -12,7 +12,7 @@ import ActionIconButton from "@/components/shared/ActionIconButton";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 export default function MyReviewsPage() {
-  const { data: session } = useSession();
+  const { data: session, isPending } = useSession();
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -38,8 +38,10 @@ export default function MyReviewsPage() {
   useEffect(() => {
     if (session?.user?.email) {
       fetchReviews();
+    } else if (!isPending) {
+      setLoading(false);
     }
-  }, [session]);
+  }, [session, isPending]);
 
   const handleDelete = (id) => {
     setDeleteReviewId(id);

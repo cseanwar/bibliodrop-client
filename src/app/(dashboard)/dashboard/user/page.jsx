@@ -32,13 +32,29 @@ export default function UserDashboardPage() {
   }, [session]);
 
   const loadDashboard = async () => {
-    const [statsData, chart] = await Promise.all([
-      getUserDashboardStats(session.user.email),
-      getUserChartData(session.user.email),
-    ]);
+    try {
+      const [statsData, chart] = await Promise.all([
+        getUserDashboardStats(session.user.email),
+        getUserChartData(session.user.email),
+      ]);
 
-    setStats(statsData);
-    setChartData(chart);
+      setStats(
+        statsData || {
+          totalBooksRead: 0,
+          pendingDeliveries: 0,
+          totalSpent: 0,
+        }
+      );
+      setChartData(chart || []);
+    } catch (error) {
+      console.error("Failed to load user dashboard:", error);
+      setStats({
+        totalBooksRead: 0,
+        pendingDeliveries: 0,
+        totalSpent: 0,
+      });
+      setChartData([]);
+    }
   };
 
   if (!stats) {
@@ -70,7 +86,7 @@ export default function UserDashboardPage() {
 
         <StatCard
           title="Total Spent"
-          value={`$${stats.totalSpent.toFixed(2)}`}
+          value={`$${(Number(stats.totalSpent) || 0).toFixed(2)}`}
           icon={<FaDollarSign />}
         />
       </div>

@@ -25,8 +25,14 @@ export default function AdminDashboardPage() {
       setStats(data);
     } catch (error) {
       console.error(error);
-
       toast.error("Failed to load dashboard");
+      setStats({
+        totalUsers: 0,
+        totalBooks: 0,
+        totalDeliveries: 0,
+        totalTransactions: 0,
+        categoryData: [],
+      });
     }
   };
 
@@ -34,7 +40,7 @@ export default function AdminDashboardPage() {
       return <LoadingSpinner />;
   }
 
-  const chartData = stats.categoryData.map((item) => ({
+  const chartData = (stats.categoryData || []).map((item) => ({
     name: item._id,
     value: item.count,
   }));

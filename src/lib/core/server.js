@@ -1,4 +1,4 @@
-// Auth is sent via HTTP cookie (credentials: "include") — no manual token extraction needed.
+import { getSessionToken } from "./client-token";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -48,7 +48,6 @@ export const serverMutation = async (
     method,
     headers: {
       "Content-Type": "application/json",
-      // ...(await authHeader()),
     },
     body: JSON.stringify(data),
   });
@@ -61,13 +60,16 @@ export const protectedFetch = async (
   method = "GET",
   body = null
 ) => {
+  const token = await getSessionToken();
+
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}${path}`,
+    `${baseUrl}${path}`,
     {
       method,
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       ...(body && {
         body: JSON.stringify(body),
@@ -75,15 +77,7 @@ export const protectedFetch = async (
     }
   );
 
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(
-      data?.message || "Request failed"
-    );
-  }
-
-  return data;
+  return handleStatusCode(res);
 };
 
 export const protectedMutation = async (
@@ -91,11 +85,14 @@ export const protectedMutation = async (
   data = {},
   method = "POST"
 ) => {
+  const token = await getSessionToken();
+
   const res = await fetch(`${baseUrl}${path}`, {
     method,
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     body: JSON.stringify(data),
   });

@@ -30,10 +30,14 @@ export const requireRole = async (...roles) => {
   const user = await getUserSession();
 
   if (!user) {
-    redirect("/auth/login");
+    redirect("/login");
   }
 
-  if (!roles.includes(user.role)) {
+  const allowedRoles = roles.flatMap((r) =>
+    r === "user" || r === "reader" ? ["user", "reader"] : [r]
+  );
+
+  if (!allowedRoles.includes(user.role)) {
     redirect("/unauthorized");
   }
 

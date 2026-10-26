@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { redirect, useParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import { FaHeart, FaEdit, FaTrash, FaEye, FaEyeSlash } from "react-icons/fa";
@@ -150,7 +150,7 @@ export default function BookDetailsPage() {
   const handleWishlist = async () => {
     if (!session) {
       toast.error("Please login first");
-      redirect('/login')
+      router.push("/login");
       return;
     }
 
@@ -204,7 +204,7 @@ export default function BookDetailsPage() {
   const handleRequestDelivery = async () => {
     if (!session) {
       toast.error("Please login first");
-      redirect('/login')
+      router.push("/login");
       return;
     }
     try {

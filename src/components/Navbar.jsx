@@ -48,6 +48,12 @@ export default function Navbar() {
     router.push("/");
   };
 
+  const getDashboardPath = (role) => {
+    if (role === "librarian") return "/dashboard/librarian";
+    if (role === "admin") return "/dashboard/admin";
+    return "/dashboard/user";
+  };
+
   const navLinkClass = (isActive) =>
     `text-md font-medium transition-colors duration-200 ${
       isActive
@@ -319,7 +325,7 @@ shadow-sm
 
                     {/* Dashboard */}
                     <Link
-                      href={`/dashboard/${session?.user?.role}`}
+                      href={getDashboardPath(session?.user?.role)}
                       onClick={() => setDropdownOpen(false)}
                       className="
           flex
@@ -471,7 +477,7 @@ shadow-sm
 
                 {session?.user && (
                   <Link
-                    href={`/dashboard/${session?.user?.role || "user"}`}
+                    href={getDashboardPath(session?.user?.role)}
                     onClick={() => setMobileMenuOpen(false)}
                     className={navLinkClass(pathname.startsWith("/dashboard"))}
                   >
@@ -492,7 +498,7 @@ shadow-sm
 
                     <div className="flex flex-col gap-4">
                       <Link
-                        href={`/dashboard/${session?.user?.role || "user"}`}
+                        href={getDashboardPath(session?.user?.role)}
                         onClick={() => setMobileMenuOpen(false)}
                         className="
                           flex
@@ -506,6 +512,23 @@ shadow-sm
                       >
                         <FaThLarge />
                         Dashboard
+                      </Link>
+
+                      <Link
+                        href="/profile"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="
+                          flex
+                          items-center
+                          gap-3
+                          text-slate-700
+                          dark:text-slate-300
+                          hover:text-blue-600
+                          transition
+                        "
+                      >
+                        <FaUser />
+                        Profile Settings
                       </Link>
 
                       <button

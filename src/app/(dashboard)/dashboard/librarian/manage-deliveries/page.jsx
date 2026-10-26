@@ -12,7 +12,7 @@ import {
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function ManageDeliveriesPage() {
-  const { data: session } = useSession();
+  const { data: session, isPending } = useSession();
 
   const [deliveries, setDeliveries] = useState([]);
 
@@ -33,8 +33,12 @@ export default function ManageDeliveriesPage() {
   };
 
   useEffect(() => {
-    fetchDeliveries();
-  }, [session]);
+    if (session?.user?.email) {
+      fetchDeliveries();
+    } else if (!isPending) {
+      setLoading(false);
+    }
+  }, [session, isPending]);
 
   const getNextStatus = (status) => {
     switch (status) {

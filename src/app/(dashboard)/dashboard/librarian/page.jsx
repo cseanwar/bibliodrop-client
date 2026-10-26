@@ -61,7 +61,28 @@ export default function LibrarianDashboard() {
 
   useEffect(() => {
     if (session?.user?.email) {
-      getLibrarianStats(session.user.email).then(setStats);
+      getLibrarianStats(session.user.email)
+        .then((data) => {
+          setStats(
+            data || {
+              totalBooksListed: 0,
+              totalEarnings: 0,
+              activePendingRequests: 0,
+              mostRequestedBooks: [],
+              monthlyEarnings: [],
+            }
+          );
+        })
+        .catch((err) => {
+          console.error("Failed to load librarian stats:", err);
+          setStats({
+            totalBooksListed: 0,
+            totalEarnings: 0,
+            activePendingRequests: 0,
+            mostRequestedBooks: [],
+            monthlyEarnings: [],
+          });
+        });
     }
   }, [session]);
 

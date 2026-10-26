@@ -17,7 +17,7 @@ import { FaEdit, FaEye, FaEyeSlash, FaTrash } from "react-icons/fa";
 import ActionIconButton from "@/components/shared/ActionIconButton";
 
 export default function ManageInventoryPage() {
-  const { data: session } = useSession();
+  const { data: session, isPending } = useSession();
 
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,8 +53,12 @@ export default function ManageInventoryPage() {
   };
 
   useEffect(() => {
-    fetchBooks();
-  }, [session]);
+    if (session?.user?.email) {
+      fetchBooks();
+    } else if (!isPending) {
+      setLoading(false);
+    }
+  }, [session, isPending]);
 
   // ── Client-side filtering ────────────────────────────────────
   const filteredBooks = useMemo(() => {

@@ -9,7 +9,7 @@ import { getUserDeliveries } from "@/lib/actions/deliveries";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function DeliveryHistoryPage() {
-  const { data: session } = useSession();
+  const { data: session, isPending } = useSession();
 
   const [deliveries, setDeliveries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,8 +29,10 @@ export default function DeliveryHistoryPage() {
   useEffect(() => {
     if (session?.user?.email) {
       fetchHistory();
+    } else if (!isPending) {
+      setLoading(false);
     }
-  }, [session]);
+  }, [session, isPending]);
 
   if (loading) {
       return <LoadingSpinner />;

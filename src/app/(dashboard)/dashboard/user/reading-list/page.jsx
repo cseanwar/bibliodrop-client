@@ -9,7 +9,7 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import BookCard from "@/components/BookCard";
 
 export default function ReadingListPage() {
-  const { data: session } = useSession();
+  const { data: session, isPending } = useSession();
 
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ export default function ReadingListPage() {
       const wishlistData = await getWishlist(session?.user?.email);
 
       setBooks(data || []);
-      setWishlist(wishlistData);
+      setWishlist(wishlistData || []);
     } catch (error) {
       console.error(error);
 
@@ -48,8 +48,10 @@ export default function ReadingListPage() {
   useEffect(() => {
     if (session?.user?.email) {
       fetchReadingList();
+    } else if (!isPending) {
+      setLoading(false);
     }
-  }, [session]);
+  }, [session, isPending]);
 
   if (loading) {
     return <LoadingSpinner />;
