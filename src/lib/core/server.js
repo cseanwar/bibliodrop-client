@@ -1,4 +1,4 @@
-import { getSessionToken } from "./client-token";
+// Auth is sent via HTTP cookie (credentials: "include") — no manual token extraction needed.
 
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -61,14 +61,12 @@ export const protectedFetch = async (
   method = "GET",
   body = null
 ) => {
-  const token = await getSessionToken();
-
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}${path}`,
     {
       method,
+      credentials: "include",
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       ...(body && {
@@ -93,15 +91,11 @@ export const protectedMutation = async (
   data = {},
   method = "POST"
 ) => {
-  const token = await getSessionToken();
-
-  console.log("TOKEN:", token);
-
   const res = await fetch(`${baseUrl}${path}`, {
     method,
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   });
