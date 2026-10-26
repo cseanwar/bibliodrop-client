@@ -45,37 +45,35 @@ export default function PaymentSuccessContent() {
   }, [bookId, session, processed]);
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center">
-      <div className="max-w-lg text-center">
-        <div className="text-6xl mb-4">✅</div>
+    <div className="min-h-[75vh] flex items-center justify-center px-4 py-16">
+      <div className="max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 text-center shadow-xl">
+        <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center text-4xl text-emerald-600 dark:text-emerald-400 shadow-sm animate-bounce">
+          ✓
+        </div>
 
-        <h1 className="text-4xl font-bold mb-4">Payment Successful</h1>
+        <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-2 tracking-tight">
+          Payment Confirmed!
+        </h1>
 
-        <p className="text-slate-500 mb-5">
-          Your delivery request has been submitted.
+        <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-8">
+          Thank you! Your delivery fee payment was successful and your book request has been placed in the dispatch queue.
         </p>
 
-        <Link
-          href="/books"
-          className="
-            inline-flex
-            items-center
-            justify-center
-            bg-blue-600
-            hover:bg-blue-700
-            text-white
-            px-4
-            py-4
-            rounded-xl
-            font-semibold
-            shadow-lg
-            shadow-blue-500/20
-            transition
-          "
-        >
-          <BiArrowBack />
-          <span className="pl-2">Back For Browse More Books</span>
-        </Link>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <Link
+            href="/dashboard/user/delivery-history"
+            className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition shadow-sm"
+          >
+            Track in Delivery History
+          </Link>
+
+          <Link
+            href="/books"
+            className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium text-sm transition"
+          >
+            Browse More Books
+          </Link>
+        </div>
       </div>
     </div>
   );
