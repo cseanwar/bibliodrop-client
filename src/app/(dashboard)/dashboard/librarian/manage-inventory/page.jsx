@@ -145,11 +145,11 @@ export default function ManageInventoryPage() {
       {/* ── Filters ─────────────────────────────────────────────── */}
       <div className="mb-6 flex gap-10">
         {/* Row 1: Availability */}
-        <div className="flex flex-wrap items-center gap-4 px-4 py-3">
+        <div className="flex flex-wrap items-center gap-4">
           <select
             value={filterAvailability}
             onChange={(e) => setFilterAvailability(e.target.value)}
-            className="border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2.5 bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">All Availability</option>
             <option value="Available">Available</option>

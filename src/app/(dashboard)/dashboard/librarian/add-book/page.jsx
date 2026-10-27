@@ -236,12 +236,12 @@ export default function AddBookPage() {
                     alt="Preview"
                     width={400}
                     height={500}
-                    className="w-full h-80 object-cover rounded-xl"
+                    className="w-full h-80 object-cover rounded-xl cursor-pointer"
                   />
                 ) : (
                   <div className="h-80 flex flex-col items-center justify-center text-slate-400">
                     <FaImage size={50} />
-                    <p className="mt-3 text-sm">Upload Book Cover</p>
+                    <p className="mt-3 text-sm cursor-pointer">Upload Book Cover</p>
                   </div>
                 )}
 
@@ -260,7 +260,7 @@ export default function AddBookPage() {
                 />
 
                 {errors.image && (
-                  <p className="text-red-500 text-sm mt-2">
+                  <p className="text-red-500 text-sm mt-2 cursor-pointer">
                     {errors.image.message}
                   </p>
                 )}
