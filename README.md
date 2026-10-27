@@ -187,7 +187,11 @@ bibliodrop/
 
 ### Prerequisites
 
-- Node.js v18+
+- Next.js v16+
+- Node.js v20+
+- React 19+
+- Better Auth v1.6.19
+- Tailwind CSS v4+
 - MongoDB Atlas cluster (free tier works)
 - Stripe account (test mode keys)
 - imgBB account (free API key at [imgbb.com](https://anwar-hossain3.imgbb.com/))

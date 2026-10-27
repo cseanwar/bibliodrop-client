@@ -53,13 +53,19 @@ export default function EditReviewModal({ isOpen, onClose, review, refetch }) {
             className="w-full border rounded-xl px-4 py-3"
           />
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full bg-blue-600 text-white py-3 rounded-xl"
-          >
-            Save Changes
-          </button>
+          <div className="flex justify-end gap-3">
+            <button onClick={onClose} className="px-4 py-2 rounded-lg border cursor-pointer">
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-blue-600 text-white py-3 rounded-xl cursor-pointer"
+            >
+              Save Changes
+            </button>
+          </div>
         </form>
       </div>
     </div>

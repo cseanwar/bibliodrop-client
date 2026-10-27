@@ -55,10 +55,9 @@ export default function Navbar() {
   };
 
   const navLinkClass = (isActive) =>
-    `text-md font-medium transition-colors duration-200 ${
-      isActive
-        ? "text-blue-600 dark:text-blue-400 font-bold"
-        : "text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
+    `text-md font-medium transition-colors duration-200 ${isActive
+      ? "text-blue-600 dark:text-blue-400 font-bold"
+      : "text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
     }`;
 
   const navItemVariants = {
@@ -387,6 +386,7 @@ shadow-sm
           hover:bg-red-50
           dark:hover:bg-red-500/10
           transition
+          cursor-pointer
         "
                     >
                       <FaSignOutAlt />
@@ -542,6 +542,7 @@ shadow-sm
                           gap-3
                           text-red-500
                           font-medium
+                          cursor-pointer
                         "
                       >
                         <FaSignOutAlt />

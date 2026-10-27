@@ -96,11 +96,6 @@ export default function EditModal({ isOpen, onClose, book, refetch }) {
               placeholder="49.99"
               className="w-full border rounded-xl px-4 py-3"
             />
-            {/* <input
-              type="number"
-              {...register("deliveryFee")}
-              className="w-full border rounded-xl px-4 py-3"
-            /> */}
           </div>
 
           <div>

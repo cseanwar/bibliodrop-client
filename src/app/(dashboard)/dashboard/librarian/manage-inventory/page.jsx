@@ -143,7 +143,7 @@ export default function ManageInventoryPage() {
       </div>
 
       {/* ── Filters ─────────────────────────────────────────────── */}
-      <div className="mb-6 space-y-3">
+      <div className="mb-6 flex gap-10">
         {/* Row 1: Availability */}
         <div className="flex flex-wrap items-center gap-4">
           <select
@@ -248,13 +248,12 @@ export default function ManageInventoryPage() {
                 <span
                   className={`
               px-3 py-1 rounded-full text-sm font-semibold
-              ${
-                book.status === "Pending Approval"
-                  ? "bg-yellow-100 text-yellow-700"
-                  : book.status === "Published"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-slate-100 text-slate-600"
-              }
+              ${book.status === "Pending Approval"
+                      ? "bg-yellow-100 text-yellow-700"
+                      : book.status === "Published"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-slate-100 text-slate-600"
+                    }
             `}
                 >
                   {book.status}

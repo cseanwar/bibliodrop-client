@@ -229,7 +229,7 @@ export default function AddBookPage() {
                 Book Cover
               </label>
 
-              <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-5">
+              <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-5 cursor-pointer">
                 {preview ? (
                   <Image
                     src={preview}
@@ -272,7 +272,7 @@ export default function AddBookPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="h-12 px-8 rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 text-white font-semibold hover:opacity-90 transition"
+              className="h-12 px-8 rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 text-white font-semibold hover:opacity-90 transition cursor-pointer"
             >
               {isSubmitting ? "Submitting..." : "Submit For Approval"}
             </button>
