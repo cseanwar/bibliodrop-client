@@ -229,7 +229,7 @@ export default function AddBookPage() {
                 Book Cover
               </label>
 
-              <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-5 cursor-pointer">
+              <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-5">
                 {preview ? (
                   <Image
                     src={preview}
@@ -256,7 +256,7 @@ export default function AddBookPage() {
                       setPreview(URL.createObjectURL(e.target.files[0]));
                     }
                   }}
-                  className="mt-4 w-full text-sm"
+                  className="mt-4 w-full text-sm cursor-pointer"
                 />
 
                 {errors.image && (
