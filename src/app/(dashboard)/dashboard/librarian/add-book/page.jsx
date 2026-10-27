@@ -260,7 +260,7 @@ export default function AddBookPage() {
                 />
 
                 {errors.image && (
-                  <p className="text-red-500 text-sm mt-2 cursor-pointer">
+                  <p className="text-red-500 text-sm mt-2 cursor-pointer">:
                     {errors.image.message}
                   </p>
                 )}
