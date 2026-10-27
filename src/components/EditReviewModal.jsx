@@ -54,14 +54,14 @@ export default function EditReviewModal({ isOpen, onClose, review, refetch }) {
           />
 
           <div className="flex justify-end gap-3">
-            <button onClick={onClose} className="px-4 py-2 rounded-lg border cursor-pointer">
+            <button onClick={onClose} className="px-4 py-2 rounded-xl border cursor-pointer hover:bg-slate-800 hover:text-slate-200 transition">
               Cancel
             </button>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-blue-600 text-white py-3 rounded-xl cursor-pointer"
+              className="bg-blue-600 hover:bg-blue-600/80 text-white hover:text-slate-200 px-4 py-2 rounded-xl cursor-pointer"
             >
               Save Changes
             </button>
